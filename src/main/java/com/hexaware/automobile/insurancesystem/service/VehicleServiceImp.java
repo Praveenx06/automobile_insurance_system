@@ -1,0 +1,49 @@
+package com.hexaware.automobile.insurancesystem.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hexaware.automobile.insurancesystem.entities.Vehicle;
+import com.hexaware.automobile.insurancesystem.exception.VehicleNotFoundException;
+import com.hexaware.automobile.insurancesystem.repository.VehicleRepository;
+@Service
+public class VehicleServiceImp implements IVehicleService {
+	@Autowired
+	VehicleRepository repo;
+
+	@Override
+	public Vehicle addVehicle(Vehicle vehicle) {
+	
+		return repo.save(vehicle);
+	}
+
+	@Override
+	public Vehicle updateVehicle(Vehicle vehicle) throws VehicleNotFoundException {
+		if (!repo.existsById(vehicle.getVehicleId())) {
+            throw new VehicleNotFoundException("Cannot update vehicle ");
+        }
+        return repo.save(vehicle);
+		
+	}
+
+	@Override
+	public Vehicle getVehicleById(int vehicleId) throws VehicleNotFoundException {
+		return repo.findById(vehicleId).orElseThrow(() -> new VehicleNotFoundException("Vehicle ID " + vehicleId + " not found"));
+	
+	}
+
+	@Override
+	public List<Vehicle> getAllVehicles() {
+	
+		return repo.findAll();
+	}
+
+	@Override
+	public String deleteVehicleById(int vehicleId) {
+		repo.deleteById(vehicleId);
+		return "Vehicle deleted successfully";
+	}
+
+}

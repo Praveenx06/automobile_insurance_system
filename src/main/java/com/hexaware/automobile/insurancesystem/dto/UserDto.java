@@ -1,0 +1,50 @@
+package com.hexaware.automobile.insurancesystem.dto;
+/*
+ * @Author : Praveen
+ * Modified On : 01-Aug-2025
+ * Description : User DTO with basic validation
+ */
+import java.time.LocalDate;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
+@NoArgsConstructor
+public class UserDto {
+	
+
+    @Min(value = 1)
+    private int userId;
+
+    @NotEmpty
+    private String name;
+
+    @NotBlank
+    private String address;
+
+    @Email
+    private String email;
+
+    @NotBlank
+    private String password;
+
+    @FutureOrPresent(message = "Date of birth must be present or future") 
+    private LocalDate dateOfBirth;
+
+    @NotNull
+    private int age;
+
+    @Pattern(regexp = "{16}")
+    private String aadhaarNumber;
+
+    @Pattern(regexp = "[A-Z]{5}[0-9]{4}[A-Z]")
+    private String panNumber;
+
+}

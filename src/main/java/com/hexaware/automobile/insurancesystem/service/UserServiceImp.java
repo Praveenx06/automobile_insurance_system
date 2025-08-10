@@ -1,0 +1,58 @@
+package com.hexaware.automobile.insurancesystem.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hexaware.automobile.insurancesystem.dto.UserDto;
+import com.hexaware.automobile.insurancesystem.entities.User;
+import com.hexaware.automobile.insurancesystem.exception.UserNotFoundException;
+import com.hexaware.automobile.insurancesystem.repository.UserRepository;
+@Service
+public class UserServiceImp implements IUserService {
+	@Autowired
+	UserRepository repo;
+
+	@Override
+	public User addUser(UserDto dto) {
+		User user = new User();
+		user.setAadhaarNumber(dto.getAadhaarNumber());
+		user.setAddress(dto.getAddress());
+		user.setAge(dto.getAge());
+		user.setDateOfBirth(dto.getDateOfBirth());
+		user.setEmail(dto.getEmail());
+		user.setName(dto.getName());
+		user.setPanNumber(dto.getPanNumber());
+		user.setPassword(dto.getPassword());
+		
+		return repo.save(user);
+	}
+
+	@Override
+	public User getById(int userId) throws UserNotFoundException {
+		
+		return repo.findById(userId).orElseThrow(()-> new UserNotFoundException ("userId "+userId+" not found") );
+	}
+
+	@Override
+	public List<User> getAllUser() {
+		
+		return repo.findAll();
+	}
+
+	@Override
+	public User updateAddon(User user) throws UserNotFoundException {
+		if(!repo.existsById(user.getUserId())) {
+			throw new UserNotFoundException ("cannot update user");
+		}
+		return repo.save(user);
+	}
+
+	@Override
+	public String deleteUserById(int userId) {
+		repo.deleteById(userId);
+		return "Record deleted successfully";
+	}
+
+}
