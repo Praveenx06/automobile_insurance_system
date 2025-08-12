@@ -26,6 +26,8 @@ public class Addon {
 
     @ManyToMany(mappedBy = "addOns")
     private List<Proposal> proposals;
+    
+    public Addon() {}
 
 	public Addon(int addOnId, String name, Double additionalCost, List<Proposal> proposals) {
 		super();

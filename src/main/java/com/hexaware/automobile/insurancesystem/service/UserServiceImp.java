@@ -17,6 +17,7 @@ public class UserServiceImp implements IUserService {
 	@Override
 	public User addUser(UserDto dto) {
 		User user = new User();
+		user.setUserId(dto.getUserId());
 		user.setAadhaarNumber(dto.getAadhaarNumber());
 		user.setAddress(dto.getAddress());
 		user.setAge(dto.getAge());
@@ -51,8 +52,16 @@ public class UserServiceImp implements IUserService {
 
 	@Override
 	public String deleteUserById(int userId) {
+		if (!repo.existsById(userId)) {
+		    throw new UserNotFoundException("User with ID " + userId + " not found");
+		}
 		repo.deleteById(userId);
 		return "Record deleted successfully";
+	}
+	
+	@Override
+	public List<User> getUsersByAadhaar(String aadhaarNumber) {
+	    return repo.findByAadhaarNumber(aadhaarNumber);
 	}
 
 }

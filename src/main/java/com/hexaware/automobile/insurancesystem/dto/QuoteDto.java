@@ -12,10 +12,10 @@ public class QuoteDto {
 	    @Min(value = 1)
 	    private int quoteId;
 
-	    @NotNull
+	    @NotNull(message="Amount cannot be null")
 	    private Double premiumAmount;
 
-	    @Min(value = 1)
+	    @Min(value = 1,message="Id cannot be null")
 	    private int proposalId;
 	    
 	    public QuoteDto() {}

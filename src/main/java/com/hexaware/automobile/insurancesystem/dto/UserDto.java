@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
@@ -32,7 +33,8 @@ public class UserDto {
     @Email
     private String email;
 
-    @NotBlank
+    @NotBlank(message="Password should not be blank")
+    @Size(min = 6)
     private String password;
 
     @FutureOrPresent(message = "Date of birth must be present or future") 

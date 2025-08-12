@@ -10,4 +10,7 @@ import com.hexaware.automobile.insurancesystem.entities.Addon;
 @Repository
 public interface AddonRepository extends JpaRepository<Addon, Integer>{
 
+	boolean existsByNameIgnoreCase(String name);
+	
+
 }

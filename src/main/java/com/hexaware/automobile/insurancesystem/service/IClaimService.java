@@ -1,21 +1,22 @@
 package com.hexaware.automobile.insurancesystem.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import com.hexaware.automobile.insurancesystem.dto.ClaimDto;
 import com.hexaware.automobile.insurancesystem.entities.Claim;
-import com.hexaware.automobile.insurancesystem.exception.ClaimNotFoundException;
+
 
 public interface IClaimService {
 	
-	public Claim addClaim(Claim claim);
+	public Claim addClaim(ClaimDto dto);
 
-    public Claim getClaimById(int claimId) throws ClaimNotFoundException;
+    public Claim getClaimById(int claimId);
 
     public List<Claim> getAllClaims();
 
-    public Claim updateClaim(Claim claim) throws ClaimNotFoundException;
-
+    public Claim updateClaim(Claim claim) ;
     public String deleteClaimById(int claimId) ;
 
-
+    public List<Claim> getClaimsBetweenDates(LocalDate startDate, LocalDate endDate);
 }

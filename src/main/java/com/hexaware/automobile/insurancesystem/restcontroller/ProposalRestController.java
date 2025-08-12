@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hexaware.automobile.insurancesystem.entities.Proposal;
 import com.hexaware.automobile.insurancesystem.service.IProposalService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -24,13 +25,13 @@ public class ProposalRestController {
 	IProposalService service;
 	 
 	@PostMapping("/add")
-    public Proposal addProposal(@RequestBody Proposal proposal) {
+    public Proposal addProposal(@Valid @RequestBody Proposal proposal) {
         log.debug("Adding new proposal: ", proposal);
         return service.addProposal(proposal);
     }
 
     @PostMapping("/update")
-    public Proposal updateProposal(@RequestBody Proposal proposal)  {
+    public Proposal updateProposal(@Valid @RequestBody Proposal proposal)  {
         log.info("Updating proposal with ID: ", proposal.getProposalId());
         return service.updateProposal(proposal);
     }

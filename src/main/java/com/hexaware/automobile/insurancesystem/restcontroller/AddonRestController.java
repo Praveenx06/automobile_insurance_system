@@ -3,7 +3,7 @@ package com.hexaware.automobile.insurancesystem.restcontroller;
  * Modified on : 1-Aug-2025
  * Description : Addon restcontroller with endpoints
  * */
-import java.util.List; 
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hexaware.automobile.insurancesystem.dto.AddonDto;
 import com.hexaware.automobile.insurancesystem.entities.Addon;
 import com.hexaware.automobile.insurancesystem.service.IAddonService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -28,20 +30,20 @@ public class AddonRestController {
 	IAddonService service;
 	
 	@PostMapping("/add")
-    public Addon addAddon(@RequestBody Addon addon) {
-        log.debug("New Addon record being added", addon);
-        return service.addAddon(addon);
+    public Addon addAddon(@Valid @RequestBody AddonDto dto) {
+        log.debug("New Addon record being added: {}", dto);
+        return service.addAddon(dto);
     }
 
     @PostMapping("/update")
-    public Addon updateAddon(@RequestBody Addon addon) {
-        log.info("Updating Addon record with ID: ",addon.getAddOnId());
+    public Addon updateAddon(@Valid @RequestBody Addon addon) {
+        log.info("Updating Addon record with ID: {} ",addon.getAddOnId());
         return service.updateAddon(addon);
     }
     
     @GetMapping("/getById/{addOnId}")
     public Addon getAddonById(@PathVariable int addOnId)  {
-        log.info("Retrieving Addon record with ID: ", addOnId);
+        log.info("Retrieving Addon record with ID: {} ", addOnId);
         return service.getAddonById(addOnId);
     }
     
@@ -52,8 +54,8 @@ public class AddonRestController {
     }
 
     @DeleteMapping("/deleteById/{addOnId}")
-    public String deleteAddonById(@PathVariable int addOnId) {
-        log.info("Deleting Addon record with ID: ", addOnId);
+    public String deleteAddonById( @PathVariable int addOnId) {
+        log.info("Deleting Addon record with ID: {} ", addOnId);
         return service.deleteAddonById(addOnId);
 }
 }

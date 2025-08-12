@@ -1,9 +1,10 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
+import java.time.LocalDate;
 /* Author : Praveen   
  * Modified on : 1-Aug-2025
  * Description : Claim restcontroller with endpoints
  * */
-import java.util.List; 
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,11 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hexaware.automobile.insurancesystem.dto.ClaimDto;
 import com.hexaware.automobile.insurancesystem.entities.Claim;
 import com.hexaware.automobile.insurancesystem.service.IClaimService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -27,37 +31,43 @@ public class ClaimRestController {
 	IClaimService service;
 	
 	  @PostMapping("/add")
-	    public Claim addClaim(@RequestBody Claim claim) {
-	        log.debug("Adding new claim ", claim);
-	        return service.addClaim(claim);
+	    public Claim addClaim(@Valid @RequestBody ClaimDto dto) {
+	        log.debug("Adding new claim: {}", dto);
+	        return service.addClaim(dto);
 	    }
 	  
 	  @PostMapping("/update")
-	    public Claim updateClaim(@RequestBody Claim claim)  {
-	        log.info("Updating claim with ID ", claim.getClaimId());
+	    public Claim updateClaim(@Valid @RequestBody Claim claim)  {
+	        log.info("Updating claim with ID: {} ", claim.getClaimId());
 	        return service.updateClaim(claim);
 	    }
 	  
 	  @GetMapping("/getById/{claimId}")
 	    public Claim getClaimById(@PathVariable int claimId)  {
-	        log.info("Retrieving claim with ID ", claimId);
+	        log.info("Retrieving claim with ID: {} ", claimId);
 	        return service.getClaimById(claimId);
 	    }
 	  
 
 	    @GetMapping("/getAll")
 	    public List<Claim> getAllClaims() {
-	        log.debug("Retrieving all claims");
+	        log.debug("Retrieving all claims: {}");
 	        return service.getAllClaims();
 	    }
 	    
 	    @DeleteMapping("/deleteById/{claimId}")
 	    	public String deleteClaimById (@PathVariable int claimId) {
+	    	log.info("Deleting claim by Id: {}",claimId);
 	    	return service.deleteClaimById(claimId);
 	    	
 	    		
 	    	}
 	    
+	    @GetMapping("/dateRange")
+	    public List<Claim> getClaimsBetweenDates(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+	        log.info("Retrieving claims between {} and {}", startDate, endDate);
+	        return service.getClaimsBetweenDates(startDate, endDate);
+	    }
 	
 
 }

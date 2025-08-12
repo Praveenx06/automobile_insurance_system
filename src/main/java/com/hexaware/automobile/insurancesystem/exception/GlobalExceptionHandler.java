@@ -45,5 +45,9 @@ public class GlobalExceptionHandler {
 	 public ResponseEntity<String> handleVehicleNotFound(VehicleNotFoundException ex) {
 	     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	 }
+	 @ExceptionHandler(AddonAlreadyExistsException.class)
+	 public ResponseEntity<String> handleAddonAlreadyExists(AddonAlreadyExistsException ex) {
+	     return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+	 }
 	 
 }

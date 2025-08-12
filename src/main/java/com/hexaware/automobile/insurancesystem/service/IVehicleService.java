@@ -2,14 +2,16 @@ package com.hexaware.automobile.insurancesystem.service;
 
 import java.util.List;
 
+import com.hexaware.automobile.insurancesystem.dto.VehicleDto;
 import com.hexaware.automobile.insurancesystem.entities.Vehicle;
-import com.hexaware.automobile.insurancesystem.exception.VehicleNotFoundException;
+
 
 public interface IVehicleService {
 
-	  Vehicle addVehicle(Vehicle vehicle);
-	    Vehicle updateVehicle(Vehicle vehicle) throws VehicleNotFoundException;
-	    Vehicle getVehicleById(int vehicleId) throws VehicleNotFoundException;
+	    public Vehicle addVehicle(VehicleDto dto);
+	    public Vehicle updateVehicle(Vehicle vehicle);
+	    public Vehicle getVehicleById(int vehicleId) ;
 	    List<Vehicle> getAllVehicles();
-	    String deleteVehicleById(int vehicleId);
+	    public String deleteVehicleById(int vehicleId);
+	    List<Vehicle> getVehiclesByType(String type);
 }

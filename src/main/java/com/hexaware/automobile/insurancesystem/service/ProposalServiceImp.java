@@ -1,10 +1,9 @@
 package com.hexaware.automobile.insurancesystem.service;
 
-import java.util.List;
+import java.util.List; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.hexaware.automobile.insurancesystem.entities.Proposal;
 import com.hexaware.automobile.insurancesystem.exception.ProposalNotFoundException;
 import com.hexaware.automobile.insurancesystem.repository.ProposalRepository;
@@ -46,5 +45,6 @@ public class ProposalServiceImp implements IProposalService{
 		repo.deleteById(proposalId);
 		return "Record deleted successfully";
 	}
+
 
 }

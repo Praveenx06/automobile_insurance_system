@@ -1,6 +1,6 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
 
-import java.util.List;
+import java.util.List; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.hexaware.automobile.insurancesystem.entities.Policy;
 import com.hexaware.automobile.insurancesystem.service.IPolicyService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 /* Author : Praveen   
@@ -29,13 +29,13 @@ public class PolicyRestController {
 	
 
     @PostMapping("/add")
-    public Policy addPolicy(@RequestBody Policy policy) {
+    public Policy addPolicy(@Valid @RequestBody Policy policy) {
         log.debug("Adding new policy: {}", policy);
         return service.addPolicy(policy);
     }
 
     @PostMapping("/update")
-    public Policy updatePolicy(@RequestBody Policy policy)  {
+    public Policy updatePolicy(@Valid @RequestBody Policy policy)  {
         log.info("Updating policy with ID: ", policy.getPolicyId());
         return service.updatePolicy(policy);
     }
@@ -57,6 +57,6 @@ public class PolicyRestController {
         log.info("Deleting policy with ID: ", policyId);
         return service.deletePolicyById(policyId);
     }
-	
+   
 
 }

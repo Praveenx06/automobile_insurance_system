@@ -15,7 +15,7 @@ public class AddonDto {
 	
 
     private int addOnId; 
-    @NotBlank
+    @NotBlank(message="Name should not be null")
     private String name;
 
     @NotNull

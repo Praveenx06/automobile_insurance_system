@@ -3,12 +3,14 @@ package com.hexaware.automobile.insurancesystem.service;
  * Modified on : 1-Aug-2025
  * Description :  Addon service implementation calss with autowired documentrepository
  * */
-import java.util.List;
+import java.util.List; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hexaware.automobile.insurancesystem.dto.AddonDto;
 import com.hexaware.automobile.insurancesystem.entities.Addon;
+import com.hexaware.automobile.insurancesystem.exception.AddonAlreadyExistsException;
 import com.hexaware.automobile.insurancesystem.exception.AddonNotFoundException;
 import com.hexaware.automobile.insurancesystem.repository.AddonRepository;
 @Service
@@ -18,9 +20,17 @@ public class AddonServiceImp implements IAddonService{
 	AddonRepository repo;
 	
 	@Override
-	public Addon addAddon(Addon addon) {
-		
-		return repo.save(addon);
+	public Addon addAddon(AddonDto dto) {
+		 if (repo.existsByNameIgnoreCase(dto.getName())) {
+	            throw new AddonAlreadyExistsException("Addon with name '" + dto.getName() + "' already exists");
+	        }
+
+	        Addon addon = new Addon();
+	        addon.setName(dto.getName());
+	        addon.setAdditionalCost(dto.getAdditionalCost());
+	       
+
+	        return repo.save(addon);
 	}
 
 	@Override

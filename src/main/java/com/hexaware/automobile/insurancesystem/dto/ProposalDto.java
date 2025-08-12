@@ -6,6 +6,7 @@ package com.hexaware.automobile.insurancesystem.dto;
  */
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
@@ -23,5 +24,7 @@ public class ProposalDto {
     private int vehicleId; 
     
     @NotBlank
+    @Pattern(regexp = "^(PENDING|APPROVED|REJECTED)$",
+    message = "status must be one of: PENDING, APPROVED, REJECTED")
     private String status;
 }

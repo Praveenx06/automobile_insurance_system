@@ -15,7 +15,7 @@ public class DocumentDto {
 	 @Min(value = 1)
 	    private int docId;
 
-	    @NotBlank
+	    @NotBlank(message="Enter document type")
 	    private String docType;
 
 	    @Min(value = 1)

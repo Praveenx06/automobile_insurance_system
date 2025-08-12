@@ -17,6 +17,7 @@ import com.hexaware.automobile.insurancesystem.entities.User;
 //import com.hexaware.automobile.insurancesystem.exception.UserNotFoundException;
 import com.hexaware.automobile.insurancesystem.service.IUserService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -27,14 +28,14 @@ public class UserRestController {
 	IUserService service;
 	
 	 @PostMapping("/add")
-	    public User addUser(@RequestBody UserDto dto) {
+	    public User addUser(@Valid @RequestBody UserDto dto) {
 	        log.info("Adding new user ");
 	        return service.addUser(dto);
 	    }
 	 
 	 @GetMapping("/{userId}")
 	    public User getById(@PathVariable int userId) {
-	        log.info("Fetching user with ID ", userId);
+	        log.info("Fetching user with ID {}", userId);
 	        return service.getById(userId); 
 	    }
 	
@@ -45,15 +46,21 @@ public class UserRestController {
 	    }
 	 
 	 @PutMapping("/update")
-	    public User updateUser(@RequestBody User user) {
-	        log.info("Updating user with ID ");
+	    public User updateUser(@Valid @RequestBody User user) {
+	        log.info("Updating user with ID {} ");
 	        return service.updateAddon(user);
 	    }
 	 
 	 @DeleteMapping("/{userId}")
 	    public String deleteUser(@PathVariable int userId) {
-	        log.info("Deleting user with ID ", userId);
+	        log.info("Deleting user with ID {}", userId);
 	        return service.deleteUserById(userId);
 	    }
+	 
+	 @GetMapping("/aadhaar/{aadhaarNumber}")
+	 public List<User> getByAadhaar(@PathVariable String aadhaarNumber) {
+	     log.info("Fetching users with Aadhaar number {}", aadhaarNumber);
+	     return service.getUsersByAadhaar(aadhaarNumber);
+	 }
 
 }

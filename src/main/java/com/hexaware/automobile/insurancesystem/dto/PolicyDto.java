@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +29,10 @@ public class PolicyDto {
     @FutureOrPresent(message = "End date cannot be in the past")
     private LocalDate endDate;
 
-    @NotBlank
+   
+    @NotBlank(message = "status is required")
+    @Pattern(regexp = "^(ACTIVE|EXPIRED)$",
+             message = "status must be one of:ACTIVE ,EXPIRED")
     private String status;
 
 }

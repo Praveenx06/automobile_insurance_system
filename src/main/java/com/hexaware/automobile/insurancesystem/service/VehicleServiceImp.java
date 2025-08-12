@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hexaware.automobile.insurancesystem.dto.VehicleDto;
 import com.hexaware.automobile.insurancesystem.entities.Vehicle;
 import com.hexaware.automobile.insurancesystem.exception.VehicleNotFoundException;
 import com.hexaware.automobile.insurancesystem.repository.VehicleRepository;
@@ -14,9 +15,14 @@ public class VehicleServiceImp implements IVehicleService {
 	VehicleRepository repo;
 
 	@Override
-	public Vehicle addVehicle(Vehicle vehicle) {
+	public Vehicle addVehicle(VehicleDto dto) {
 	
-		return repo.save(vehicle);
+		Vehicle vehicle = new Vehicle();
+		vehicle.setVehicleId(dto.getVehicleId());
+        vehicle.setType(dto.getType());
+        vehicle.setModel(dto.getModel());
+        vehicle.setYear(dto.getYear());
+        return repo.save(vehicle);
 	}
 
 	@Override
@@ -45,5 +51,11 @@ public class VehicleServiceImp implements IVehicleService {
 		repo.deleteById(vehicleId);
 		return "Vehicle deleted successfully";
 	}
+	
+    @Override
+    public List<Vehicle> getVehiclesByType(String type) {
+        return repo.findByType(type);
+    }
+
 
 }

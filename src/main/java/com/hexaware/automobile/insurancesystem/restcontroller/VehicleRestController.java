@@ -3,6 +3,7 @@ package com.hexaware.automobile.insurancesystem.restcontroller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hexaware.automobile.insurancesystem.dto.VehicleDto;
 import com.hexaware.automobile.insurancesystem.entities.Vehicle;
 import com.hexaware.automobile.insurancesystem.service.IVehicleService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
@@ -24,9 +27,9 @@ public class VehicleRestController {
     private IVehicleService service;
 
     @PostMapping("/add")
-    public Vehicle addVehicle(@RequestBody Vehicle vehicle) {
-        log.debug("Adding new vehicle: ", vehicle);
-        return service.addVehicle(vehicle);
+    public Vehicle addVehicle(@Valid @RequestBody VehicleDto dto) {
+        log.debug("Adding new vehicle: ", dto);
+        return service.addVehicle(dto);
     }
 
     @PostMapping("/update")
@@ -51,6 +54,12 @@ public class VehicleRestController {
     public String deleteVehicleById(@PathVariable int vehicleId)  {
         log.info("Deleting vehicle with ID: ", vehicleId);
         return service.deleteVehicleById(vehicleId);
+    }
+    @GetMapping("/type/{type}")
+    public ResponseEntity<List<Vehicle>> getVehiclesByType(@PathVariable String type) {
+    	log.info("getting vehicle by type " );
+        List<Vehicle> vehicles = service.getVehiclesByType(type);
+        return ResponseEntity.ok(vehicles);
     }
 
 }
