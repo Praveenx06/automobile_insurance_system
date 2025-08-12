@@ -41,7 +41,7 @@ public class UserDto {
     @NotNull
     private int age;
 
-    @Pattern(regexp = "{16}")
+    @Pattern(regexp = "\\d{16}", message = "Aadhaar must be exactly 16 digits")
     private String aadhaarNumber;
 
     @Pattern(regexp = "[A-Z]{5}[0-9]{4}[A-Z]")

@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class ClaimDto {
 
     private int claimId;
 
-    @FutureOrPresent(message = "Claim date cannot be in the past")
+    @PastOrPresent(message = "Claim date cannot be in the past")
     private LocalDate claimDate;
 
     @NotBlank

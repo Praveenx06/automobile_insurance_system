@@ -15,5 +15,35 @@ public class GlobalExceptionHandler {
 	 public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
 	     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	 }
-
+	 
+	 @ExceptionHandler(ClaimNotFoundException.class)
+	 public ResponseEntity<String> handleClaimNotFound(ClaimNotFoundException ex) {
+	     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	 }
+	 
+	 @ExceptionHandler(DocumentNotFoundException.class)
+	 public ResponseEntity<String> handleDocumentNotFound(DocumentNotFoundException ex) {
+	     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	 }
+	 
+	 @ExceptionHandler(PolicyNotFoundException.class)
+	 public ResponseEntity<String> handlePolicyNotFound(PolicyNotFoundException ex) {
+	     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	 }
+	  
+	 @ExceptionHandler(ProposalNotFoundException.class)
+	 public ResponseEntity<String> handleProposalNotFound(ProposalNotFoundException ex) {
+	     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	 }
+	 
+	 @ExceptionHandler(QuoteNotFoundException.class)
+	 public ResponseEntity<String> handleQuoteNotFound(QuoteNotFoundException ex) {
+	     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	 }
+	 
+	 @ExceptionHandler(VehicleNotFoundException.class)
+	 public ResponseEntity<String> handleVehicleNotFound(VehicleNotFoundException ex) {
+	     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	 }
+	 
 }

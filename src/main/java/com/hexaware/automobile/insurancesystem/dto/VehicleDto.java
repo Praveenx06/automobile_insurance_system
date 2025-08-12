@@ -7,6 +7,7 @@ package com.hexaware.automobile.insurancesystem.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
@@ -26,7 +27,7 @@ public class VehicleDto {
     @NotBlank(message = "Model cannot be blank")
     private String model;
 
-    @NotBlank
+    @NotNull
     private Integer year;
     
 
