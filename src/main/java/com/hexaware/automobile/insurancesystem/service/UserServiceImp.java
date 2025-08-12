@@ -26,7 +26,7 @@ public class UserServiceImp implements IUserService {
 		user.setName(dto.getName());
 		user.setPanNumber(dto.getPanNumber());
 		user.setPassword(dto.getPassword());
-		
+		user.setRoles(dto.getRoles());
 		return repo.save(user);
 	}
 

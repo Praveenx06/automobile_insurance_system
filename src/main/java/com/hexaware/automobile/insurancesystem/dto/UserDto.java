@@ -48,5 +48,10 @@ public class UserDto {
 
     @Pattern(regexp = "[A-Z]{5}[0-9]{4}[A-Z]")
     private String panNumber;
+    
+    @Pattern(regexp = "^(USER|ADMIN)$",
+    	    message = "Role must be one of: USER, ADMIN")
+    private String roles;
+    
 
 }

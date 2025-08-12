@@ -33,5 +33,6 @@ public class User {
 	    private String panNumber;
 	    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	    private List<Proposal> proposals;
+	    private String roles;
 
 }

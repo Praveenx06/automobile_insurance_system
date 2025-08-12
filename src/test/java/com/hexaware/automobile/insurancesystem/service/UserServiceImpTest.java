@@ -27,6 +27,7 @@ class UserServiceImpTest {
 
 	    private static final int TEST_USER_ID = 2001;
 	    private static final String TEST_AADHAAR = "1234567890123456";
+	    private static final String USER = "USER";
 
 	    @Test
 	    @Order(1)
@@ -41,6 +42,7 @@ class UserServiceImpTest {
 	        dto.setAge(30);
 	        dto.setAadhaarNumber(TEST_AADHAAR);
 	        dto.setPanNumber("ABCDE1234F");
+	        dto.setRoles(USER);
 
 	        User saved = userService.addUser(dto);
 	        assertNotNull(saved);

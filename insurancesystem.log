@@ -503,3 +503,41 @@
 [34m2025-08-12 18:19:51.496[0;39m [INFO] o.s.o.j.LocalContainerEntityManagerFactoryBean [RMI TCP Connection(2)-127.0.0.1] Closing JPA EntityManagerFactory for persistence unit 'default'
 [34m2025-08-12 18:19:51.499[0;39m [INFO] c.z.h.HikariDataSource [RMI TCP Connection(2)-127.0.0.1] HikariPool-1 - Shutdown initiated...
 [34m2025-08-12 18:19:51.512[0;39m [INFO] c.z.h.HikariDataSource [RMI TCP Connection(2)-127.0.0.1] HikariPool-1 - Shutdown completed.
+[34m2025-08-12 19:36:23.504[0;39m [INFO] c.h.a.i.AutomoblieInsuranceSystemApplication [main] Starting AutomoblieInsuranceSystemApplication using Java 17.0.10 with PID 24692 (C:\Users\prave\eclipse-workspace\automoblieInsuranceSystem\target\classes started by prave in C:\Users\prave\eclipse-workspace\automoblieInsuranceSystem)
+[34m2025-08-12 19:36:23.507[0;39m [INFO] c.h.a.i.AutomoblieInsuranceSystemApplication [main] No active profile set, falling back to 1 default profile: "default"
+[34m2025-08-12 19:36:25.258[0;39m [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[34m2025-08-12 19:36:25.412[0;39m [INFO] o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 130 ms. Found 8 JPA repository interfaces.
+[34m2025-08-12 19:36:26.169[0;39m [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+[34m2025-08-12 19:36:26.193[0;39m [INFO] o.a.c.c.StandardService [main] Starting service [Tomcat]
+[34m2025-08-12 19:36:26.195[0;39m [INFO] o.a.c.c.StandardEngine [main] Starting Servlet engine: [Apache Tomcat/10.1.43]
+[34m2025-08-12 19:36:26.303[0;39m [INFO] o.a.c.c.C.[.[.[/] [main] Initializing Spring embedded WebApplicationContext
+[34m2025-08-12 19:36:26.305[0;39m [INFO] o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2723 ms
+[34m2025-08-12 19:36:26.492[0;39m [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+[34m2025-08-12 19:36:27.100[0;39m [INFO] c.z.h.p.HikariPool [main] HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6def0632
+[34m2025-08-12 19:36:27.103[0;39m [INFO] c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+[34m2025-08-12 19:36:27.253[0;39m [INFO] o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+[34m2025-08-12 19:36:27.437[0;39m [INFO] o.h.Version [main] HHH000412: Hibernate ORM core version 6.6.22.Final
+[34m2025-08-12 19:36:27.545[0;39m [INFO] o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+[34m2025-08-12 19:36:28.194[0;39m [INFO] o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+[34m2025-08-12 19:36:28.325[0;39m [WARN] o.h.o.deprecation [main] HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[34m2025-08-12 19:36:28.354[0;39m [INFO] o.h.o.c.pooling [main] HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.3
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[34m2025-08-12 19:36:30.202[0;39m [INFO] o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[34m2025-08-12 19:36:30.576[0;39m [INFO] o.s.o.j.LocalContainerEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+[34m2025-08-12 19:36:31.089[0;39m [INFO] o.s.d.j.r.q.QueryEnhancerFactory [main] Hibernate is in classpath; If applicable, HQL parser will be used.
+[34m2025-08-12 19:36:31.928[0;39m [WARN] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[34m2025-08-12 19:36:33.837[0;39m [INFO] o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path '/'
+[34m2025-08-12 19:36:33.852[0;39m [INFO] c.h.a.i.AutomoblieInsuranceSystemApplication [main] Started AutomoblieInsuranceSystemApplication in 11.173 seconds (process running for 12.292)
+[34m2025-08-12 19:36:33.858[0;39m [INFO] o.s.b.a.b.JobLauncherApplicationRunner [main] Running default command line with: []
+[34m2025-08-12 19:38:33.765[0;39m [INFO] o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin [RMI TCP Connection(4)-127.0.0.1] Application shutdown requested.
+[34m2025-08-12 19:38:33.769[0;39m [INFO] o.s.b.w.e.t.GracefulShutdown [RMI TCP Connection(4)-127.0.0.1] Commencing graceful shutdown. Waiting for active requests to complete
+[34m2025-08-12 19:38:33.910[0;39m [INFO] o.s.b.w.e.t.GracefulShutdown [tomcat-shutdown] Graceful shutdown complete
+[34m2025-08-12 19:38:33.918[0;39m [INFO] o.s.o.j.LocalContainerEntityManagerFactoryBean [RMI TCP Connection(4)-127.0.0.1] Closing JPA EntityManagerFactory for persistence unit 'default'
+[34m2025-08-12 19:38:33.922[0;39m [INFO] c.z.h.HikariDataSource [RMI TCP Connection(4)-127.0.0.1] HikariPool-1 - Shutdown initiated...
+[34m2025-08-12 19:38:33.933[0;39m [INFO] c.z.h.HikariDataSource [RMI TCP Connection(4)-127.0.0.1] HikariPool-1 - Shutdown completed.
