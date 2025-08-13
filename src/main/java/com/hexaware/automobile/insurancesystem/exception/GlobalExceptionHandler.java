@@ -40,6 +40,10 @@ public class GlobalExceptionHandler {
 	 public ResponseEntity<String> handleQuoteNotFound(QuoteNotFoundException ex) {
 	     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	 }
+	 @ExceptionHandler(ResourceNotFoundException.class)
+	 public ResponseEntity<String> handleResourceNotFound(ResourceNotFoundException ex) {
+	     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	 }
 	 
 	 @ExceptionHandler(VehicleNotFoundException.class)
 	 public ResponseEntity<String> handleVehicleNotFound(VehicleNotFoundException ex) {

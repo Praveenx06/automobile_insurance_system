@@ -1,17 +1,11 @@
 package com.hexaware.automobile.insurancesystem.security;
-
-
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.hexaware.automobile.insurancesystem.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.hexaware.automobile.insurancesystem.entities.User;
+import java.util.Collection;
+import java.util.List;
 
 public class UserInfoUserDetails implements UserDetails {
 
@@ -20,12 +14,10 @@ public class UserInfoUserDetails implements UserDetails {
     private List<GrantedAuthority> authorities;
 
     public UserInfoUserDetails(User user) {
-        this.username = user.getName();
+        this.username = user.getEmail();
         this.password = user.getPassword();
-        
-        this.authorities = Arrays.stream(user.getRoles().split(","))
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.trim()))
-                .collect(Collectors.toList());
+        // Store exactly "ADMIN" or "USER"
+        this.authorities = List.of(new SimpleGrantedAuthority(user.getRoles()));
     }
 
     @Override
@@ -44,22 +36,14 @@ public class UserInfoUserDetails implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;  
-    }
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true; 
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;  
-    }
+    public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() {
-        return true; 
-    }
+    public boolean isEnabled() { return true; }
 }

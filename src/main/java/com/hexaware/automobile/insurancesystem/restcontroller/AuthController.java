@@ -1,66 +1,52 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
 
-
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.hexaware.automobile.insurancesystem.dto.AuthRequest;
 import com.hexaware.automobile.insurancesystem.dto.AuthResponse;
-import com.hexaware.automobile.insurancesystem.dto.UserDto;
 import com.hexaware.automobile.insurancesystem.entities.User;
 import com.hexaware.automobile.insurancesystem.repository.UserRepository;
 import com.hexaware.automobile.insurancesystem.security.JwtService;
-import com.hexaware.automobile.insurancesystem.security.UserInfoUserDetailsServiceImp;
-import com.hexaware.automobile.insurancesystem.service.IUserService;
-import com.hexaware.automobile.insurancesystem.service.UserServiceImp;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtService jwtService;
-
-    @Autowired
-    private UserInfoUserDetailsServiceImp userDetailsService;
-
-    @Autowired
-    private IUserService userService;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UserRepository userRepository; // your repo
+    private final PasswordEncoder passwordEncoder;
+    private final UserDetailsService userDetailsService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserDto user) {
-        if(userRepository.findByName(user.getName()).isPresent()){
-            return ResponseEntity.badRequest().body("Username already taken");
+    public String register(@RequestBody User user) {
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
         }
-        userService.addUser(user); // hashes password inside
-        return ResponseEntity.ok("User registered successfully");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return "User registered successfully";
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        try {
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(401).body(new AuthResponse("Invalid credentials"));
-        }
+    public AuthResponse login(@RequestBody AuthRequest authRequest) {
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
+        );
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        String role = userRepository.findByName(request.getUsername()).get().getRoles();
-        String jwt = jwtService.generateToken(userDetails.getUsername(), role);
-
-        return ResponseEntity.ok(new AuthResponse(jwt));
+        UserDetails ud = userDetailsService.loadUserByUsername(authRequest.getUsername());
+        String token = jwtService.generateToken(ud);
+        return new AuthResponse(token);
     }
 }

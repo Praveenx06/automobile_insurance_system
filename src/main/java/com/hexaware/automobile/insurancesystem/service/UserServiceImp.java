@@ -4,16 +4,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hexaware.automobile.insurancesystem.dto.UserDto;
 import com.hexaware.automobile.insurancesystem.entities.User;
+import com.hexaware.automobile.insurancesystem.exception.ResourceNotFoundException;
 import com.hexaware.automobile.insurancesystem.exception.UserNotFoundException;
 import com.hexaware.automobile.insurancesystem.repository.UserRepository;
-import com.hexaware.automobile.insurancesystem.security.UserInfoUserDetails;
+
 @Service
 public class UserServiceImp implements IUserService {
 	@Autowired
@@ -77,6 +78,12 @@ public class UserServiceImp implements IUserService {
 		return Optional.empty();
 	
 	}
+	 @Override
+	    public User getUserByEmail(String email) {
+	        
+	        return repo.findByEmail(email)
+	                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+	    }
 
 	
 

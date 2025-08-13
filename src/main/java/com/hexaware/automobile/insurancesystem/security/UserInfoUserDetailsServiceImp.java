@@ -2,30 +2,22 @@ package com.hexaware.automobile.insurancesystem.security;
 
 
 
-
-
-
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hexaware.automobile.insurancesystem.entities.User;
+import com.hexaware.automobile.insurancesystem.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
-import com.hexaware.automobile.insurancesystem.entities.User;
-import com.hexaware.automobile.insurancesystem.repository.UserRepository;
-
 @Service
+@RequiredArgsConstructor
 public class UserInfoUserDetailsServiceImp implements UserDetailsService {
-	@Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Optional<User> userOpt = userRepository.findByName(name);
-
-        User user = userOpt.orElseThrow(() -> 
-            new UsernameNotFoundException("User not found with username: " + name));
-
-        return new UserInfoUserDetails(user);
+    public UserDetails loadUserByUsername(String username /* email */) throws UsernameNotFoundException {
+        User u = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+        return new UserInfoUserDetails(u);
     }
 }

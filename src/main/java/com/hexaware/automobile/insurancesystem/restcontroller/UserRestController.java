@@ -45,7 +45,7 @@ public class UserRestController {
 	 
 	
 	 @PreAuthorize("hasAuthority('ADMIN')")
-	 @GetMapping
+	 @GetMapping("/getall")
 	    public List<User> getAllUsers() {
 	        log.info("Fetching all users");
 	        return service.getAllUser();
@@ -81,9 +81,16 @@ public class UserRestController {
 	         return ResponseEntity.ok(userOpt.get());
 	     } else {
 	         return ResponseEntity.notFound().build();
-	     }
+	     }	 
+}
+	 
+	 @GetMapping("/email/{email}")
+	    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+	    public User getUserByEmail(@PathVariable String email) {
+	        log.info("Controller: getUserByEmail email={}", email);
+	        return service.getUserByEmail(email);
+	    }
 
 	 
 	 
-}
 	 }

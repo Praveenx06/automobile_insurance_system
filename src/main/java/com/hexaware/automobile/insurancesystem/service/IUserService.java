@@ -17,5 +17,7 @@ public interface IUserService {
 	public String deleteUserById(int userId);
 	public List<User> getUsersByAadhaar(String aadhaarNumber);
 	public Optional<User> getByUsername(String name);
+	
+	User getUserByEmail(String email);
 
 }
