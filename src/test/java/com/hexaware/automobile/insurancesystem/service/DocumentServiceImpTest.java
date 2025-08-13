@@ -21,7 +21,7 @@ import com.hexaware.automobile.insurancesystem.repository.ProposalRepository;
 @TestMethodOrder(OrderAnnotation.class)
 class DocumentServiceImpTest {
 	 @Autowired
-	    private DocumentServiceImp documentService;
+	     DocumentServiceImp documentService;
 
 	    @Autowired
 	    private ProposalRepository proposalRepository; // To ensure proposal exists before testing

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
@@ -89,6 +90,13 @@ class UserServiceImpTest {
 	        String msg = userService.deleteUserById(TEST_USER_ID);
 	        assertEquals("Record deleted successfully", msg);
 	        assertThrows(UserNotFoundException.class, () -> userService.getById(TEST_USER_ID));
+	    }
+	    
+	    @Test
+	    @Order
+	    public void testGetUsersByUsername() {
+	    	Optional<User> users = userService.getByUsername(USER);
+	    	assertNotNull(users);
 	    }
 	
 

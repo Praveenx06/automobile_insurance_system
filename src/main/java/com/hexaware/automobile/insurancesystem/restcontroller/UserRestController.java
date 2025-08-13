@@ -1,8 +1,10 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,5 +64,18 @@ public class UserRestController {
 	     log.info("Fetching users with Aadhaar number {}", aadhaarNumber);
 	     return service.getUsersByAadhaar(aadhaarNumber);
 	 }
+	 
+	 @GetMapping("/findbyUsername/{name}")
+	 public ResponseEntity<User> getByUsername(@PathVariable String name) {
+	     log.info("Fetching users with username {}", name);
+	     Optional<User> userOpt = service.getByUsername(name);
+	     if (userOpt.isPresent()) {
+	         return ResponseEntity.ok(userOpt.get());
+	     } else {
+	         return ResponseEntity.notFound().build();
+	     }
 
+	 
+	 
 }
+	 }

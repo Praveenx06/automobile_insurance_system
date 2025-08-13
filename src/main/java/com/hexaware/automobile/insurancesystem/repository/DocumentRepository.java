@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.hexaware.automobile.insurancesystem.entities.Document;
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
+	
+	
 	 List<Document> findByProposal_ProposalId(int proposalId);
 	
 

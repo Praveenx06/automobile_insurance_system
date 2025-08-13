@@ -1,18 +1,26 @@
 package com.hexaware.automobile.insurancesystem.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hexaware.automobile.insurancesystem.dto.UserDto;
 import com.hexaware.automobile.insurancesystem.entities.User;
 import com.hexaware.automobile.insurancesystem.exception.UserNotFoundException;
 import com.hexaware.automobile.insurancesystem.repository.UserRepository;
+import com.hexaware.automobile.insurancesystem.security.UserInfoUserDetails;
 @Service
 public class UserServiceImp implements IUserService {
 	@Autowired
 	UserRepository repo;
+	
+	@Autowired
+	PasswordEncoder encoder;
 
 	@Override
 	public User addUser(UserDto dto) {
@@ -25,7 +33,7 @@ public class UserServiceImp implements IUserService {
 		user.setEmail(dto.getEmail());
 		user.setName(dto.getName());
 		user.setPanNumber(dto.getPanNumber());
-		user.setPassword(dto.getPassword());
+		user.setPassword(encoder.encode(dto.getPassword()));
 		user.setRoles(dto.getRoles());
 		return repo.save(user);
 	}
@@ -64,4 +72,13 @@ public class UserServiceImp implements IUserService {
 	    return repo.findByAadhaarNumber(aadhaarNumber);
 	}
 
-}
+	@Override
+	public Optional<User> getByUsername(String name) throws UsernameNotFoundException{
+		return Optional.empty();
+	
+	}
+
+	
+
+	}
+
