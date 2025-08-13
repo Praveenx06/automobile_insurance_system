@@ -49,5 +49,9 @@ public class GlobalExceptionHandler {
 	 public ResponseEntity<String> handleAddonAlreadyExists(AddonAlreadyExistsException ex) {
 	     return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
 	 }
+	 @ExceptionHandler(UsernameNotFoundException.class)
+	 public ResponseEntity<String> handleUsernameNotFound(UsernameNotFoundException ex) {
+	     return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+	 }
 	 
 }
