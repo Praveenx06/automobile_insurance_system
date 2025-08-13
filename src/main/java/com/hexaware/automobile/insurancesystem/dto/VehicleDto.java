@@ -20,7 +20,7 @@ public class VehicleDto {
     private int vehicleId;
 
     @NotEmpty(message = "Type cannot be empty")
-    @Pattern(regexp = "^(CAR|BIKE|VAN|TRUCK|)$",
+    @Pattern(regexp = "^(CAR|BIKE|VAN|TRUCK)$",
     message = "type must be one of: CAR, BIKE, VAN, TRUCK")
     private String type;
 

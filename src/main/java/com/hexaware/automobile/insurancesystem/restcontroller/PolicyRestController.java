@@ -1,15 +1,18 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
 
-import java.util.List; 
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.hexaware.automobile.insurancesystem.entities.Policy;
 import com.hexaware.automobile.insurancesystem.service.IPolicyService;
 
@@ -27,31 +30,35 @@ public class PolicyRestController {
 	@Autowired
 	IPolicyService service;
 	
-
+	 @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/add")
     public Policy addPolicy(@Valid @RequestBody Policy policy) {
         log.debug("Adding new policy: {}", policy);
         return service.addPolicy(policy);
     }
-
-    @PostMapping("/update")
+	 
+	 @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("/update")
     public Policy updatePolicy(@Valid @RequestBody Policy policy)  {
         log.info("Updating policy with ID: ", policy.getPolicyId());
         return service.updatePolicy(policy);
     }
 
+	 @PreAuthorize("hasAuthority('ADMIN','USER')")
     @GetMapping("/getById/{policyId}")
     public Policy getPolicyById(@PathVariable int policyId) {
         log.info("Retrieving policy with ID: ", policyId);
         return service.getPolicyById(policyId);
     }
 
+	 @PreAuthorize("hasAuthority('ADMIN','USER')")
     @GetMapping("/getAll")
     public List<Policy> getAllPolicies() {
         log.debug("Retrieving all policies");
         return service.getAllPolicies();
     }
-
+    
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/deleteById/{policyId}")
     public String deletePolicyById(@PathVariable int policyId) {
         log.info("Deleting policy with ID: ", policyId);

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,24 +36,31 @@ public class UserRestController {
 	        return service.addUser(dto);
 	    }
 	 
+	 @PreAuthorize("hasAuthority('ADMIN','USER')")
 	 @GetMapping("/{userId}")
 	    public User getById(@PathVariable int userId) {
 	        log.info("Fetching user with ID {}", userId);
 	        return service.getById(userId); 
 	    }
+	 
 	
+	 @PreAuthorize("hasAuthority('ADMIN')")
 	 @GetMapping
 	    public List<User> getAllUsers() {
 	        log.info("Fetching all users");
 	        return service.getAllUser();
 	    }
 	 
+	 
+	 @PreAuthorize("hasAuthority('ADMIN')")
 	 @PutMapping("/update")
 	    public User updateUser(@Valid @RequestBody User user) {
 	        log.info("Updating user with ID {} ");
 	        return service.updateAddon(user);
 	    }
 	 
+	 
+	 @PreAuthorize("hasAuthority('ADMIN')")
 	 @DeleteMapping("/{userId}")
 	    public String deleteUser(@PathVariable int userId) {
 	        log.info("Deleting user with ID {}", userId);

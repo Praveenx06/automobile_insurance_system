@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,36 +27,41 @@ public class VehicleRestController {
 	
 	@Autowired
     private IVehicleService service;
-
+	 @PreAuthorize("hasAuthority('ADMIN','USER')")
     @PostMapping("/add")
     public Vehicle addVehicle(@Valid @RequestBody VehicleDto dto) {
         log.debug("Adding new vehicle: ", dto);
         return service.addVehicle(dto);
     }
-
-    @PostMapping("/update")
+	 
+	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+    @PutMapping("/update")
     public Vehicle updateVehicle(@RequestBody Vehicle vehicle) {
         log.info("Updating vehicle with ID: ");
         return service.updateVehicle(vehicle);
     }
-
+    
+    @PreAuthorize("hasAuthority('ADMIN','USER')")
     @GetMapping("/getById/{vehicleId}")
     public Vehicle getVehicleById(@PathVariable int vehicleId)  {
         log.info("Retrieving vehicle with ID: ", vehicleId);
         return service.getVehicleById(vehicleId);
     }
-
+    
+    @PreAuthorize("hasAuthority('ADMIN','USER')")
     @GetMapping("/getAll")
     public List<Vehicle> getAllVehicles() {
         log.debug("Retrieving all vehicles");
         return service.getAllVehicles();
     }
-
+    
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/deleteById/{vehicleId}")
     public String deleteVehicleById(@PathVariable int vehicleId)  {
         log.info("Deleting vehicle with ID: ", vehicleId);
         return service.deleteVehicleById(vehicleId);
     }
+    
     @GetMapping("/type/{type}")
     public ResponseEntity<List<Vehicle>> getVehiclesByType(@PathVariable String type) {
     	log.info("getting vehicle by type " );
