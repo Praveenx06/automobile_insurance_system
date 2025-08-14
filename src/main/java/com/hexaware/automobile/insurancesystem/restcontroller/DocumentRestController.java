@@ -1,5 +1,5 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
-/* Author : Praveen   
+/* Author : Praveen    
  * Modified on : 1-Aug-2025
  * Description : Document restcontroller with endpoints
  * */
@@ -28,37 +28,39 @@ import lombok.extern.slf4j.Slf4j;
 public class DocumentRestController {
 	@Autowired
     private IDocumentService service;
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/add")
     public Document addDocument(@RequestBody DocumentDto dto) {
         log.debug("Adding new document ", dto);
         return service.addDocument(dto);
     }
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PutMapping("/update")
     public Document updateDocument(@RequestBody Document document)  {
         log.info("Updating document with ID ", document.getDocId());
         return service.updateDocument(document);
     }
-    @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getById/{docId}")
     public Document getDocumentById(@PathVariable int docId)  {
         log.info("Retrieving document with ID: {}", docId);
         return service.getDocumentById(docId);
     }
     
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getAll")
     public List<Document> getAllDocuments() {
         log.debug("Retrieving all documents");
         return service.getAllDocuments();
     }
-    @PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/deleteById/{docId}")
     public String deleteDocumentById(@PathVariable int docId) {
         log.info("Deleting document with ID ", docId);
         return service.deleteDocumentById(docId);
     }
     
+	@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/proposal/{proposalId}")
     public List<Document> getDocumentsByProposalId(@PathVariable int proposalId) {
     	

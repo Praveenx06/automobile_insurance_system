@@ -1,5 +1,5 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
-/* Author : Praveen   
+/* Author : Praveen    
  * Modified on : 1-Aug-2025
  * Description : Addon restcontroller with endpoints
  * */
@@ -30,35 +30,35 @@ public class AddonRestController {
 
 	@Autowired
 	IAddonService service;
-	 @PreAuthorize("hasAuthority('ADMIN')")
+	 @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	@PostMapping("/add")
     public Addon addAddon(@Valid @RequestBody AddonDto dto) {
         log.debug("New Addon record being added: {}", dto);
         return service.addAddon(dto);
     }
 
-	 @PreAuthorize("hasAuthority('ADMIN')")
+	 @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/update")
     public Addon updateAddon(@Valid @RequestBody Addon addon) {
         log.info("Updating Addon record with ID: {} ",addon.getAddOnId());
         return service.updateAddon(addon);
     }
     
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	 @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getById/{addOnId}")
     public Addon getAddonById(@PathVariable int addOnId)  {
         log.info("Retrieving Addon record with ID: {} ", addOnId);
         return service.getAddonById(addOnId);
     }
     
-    @PreAuthorize("hasAuthority('ADMIN','USER')")
+	 @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getAll")
     public List<Addon> getAllAddons() {
         log.debug("Retrieving all Addon records");
         return service.getAllAddons();
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+	 @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/deleteById/{addOnId}")
     public String deleteAddonById( @PathVariable int addOnId) {
         log.info("Deleting Addon record with ID: {} ", addOnId);

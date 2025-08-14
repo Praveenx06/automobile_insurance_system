@@ -1,5 +1,8 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
-
+/* Author : Praveen   
+ * Modified on : 2-Aug-2025
+ * Description : Proposal restcontroller with endpoints
+ * */
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,21 +29,21 @@ public class ProposalRestController {
 	@Autowired
 	IProposalService service;
 	
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	@PostMapping("/add")
     public Proposal addProposal(@Valid @RequestBody Proposal proposal) {
         log.debug("Adding new proposal: ", proposal);
         return service.addProposal(proposal);
     }
 
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PutMapping("/update")
     public Proposal updateProposal(@Valid @RequestBody Proposal proposal)  {
         log.info("Updating proposal with ID: ", proposal.getProposalId());
         return service.updateProposal(proposal);
     }
     
-    @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getById/{proposalId}")
     public Proposal getProposalById(@PathVariable int proposalId) {
         log.info("Retrieving proposal with ID: ", proposalId);
@@ -48,14 +51,14 @@ public class ProposalRestController {
     }
 
     
-    @PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/getAll")
     public List<Proposal> getAllProposals() {
         log.debug("Retrieving all proposals");
         return service.getAllProposals();
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @DeleteMapping("/deleteById/{proposalId}")
     public String deleteProposalById(@PathVariable int proposalId) {
         log.info("Deleting proposal with ID: ", proposalId);

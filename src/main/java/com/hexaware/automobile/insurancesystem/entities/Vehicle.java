@@ -1,6 +1,6 @@
 package com.hexaware.automobile.insurancesystem.entities;
 /*
- * Author : Praveen 
+ * Author : Praveen  
  * Modified on : 25-Jul-2025 
  * Description : Vehicle entity with Orm 
  * 

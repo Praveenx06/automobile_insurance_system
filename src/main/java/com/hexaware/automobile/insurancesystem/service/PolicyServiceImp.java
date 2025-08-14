@@ -1,7 +1,7 @@
 package com.hexaware.automobile.insurancesystem.service;
-/* Author : Praveen   
+/* Author : Praveen    
  * Modified on : 02-Aug-2025
- * Description : Policy service implementation calss with autowired documentrepository
+ * Description : Policy service implementation calss 
  * */
 import java.util.List;
 

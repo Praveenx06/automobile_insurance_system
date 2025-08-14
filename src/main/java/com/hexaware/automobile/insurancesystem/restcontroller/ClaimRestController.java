@@ -32,34 +32,35 @@ public class ClaimRestController {
 	@Autowired
 	IClaimService service;
 	
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	  @PostMapping("/add")
 	    public Claim addClaim(@Valid @RequestBody ClaimDto dto) {
 	        log.debug("Adding new claim: {}", dto);
 	        return service.addClaim(dto);
 	    }
 	  
-	  @PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	  @PutMapping("/update")
 	    public Claim updateClaim(@Valid @RequestBody Claim claim)  {
 	        log.info("Updating claim with ID: {} ", claim.getClaimId());
 	        return service.updateClaim(claim);
 	    }
 	  
-	  @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	  @GetMapping("/getById/{claimId}")
 	    public Claim getClaimById(@PathVariable int claimId)  {
 	        log.info("Retrieving claim with ID: {} ", claimId);
 	        return service.getClaimById(claimId);
 	    }
 	  
-	  @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	    @GetMapping("/getAll")
 	    public List<Claim> getAllClaims() {
 	        log.debug("Retrieving all claims: {}");
 	        return service.getAllClaims();
 	    }
-	    
+	  
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	    @DeleteMapping("/deleteById/{claimId}")
 	    	public String deleteClaimById (@PathVariable int claimId) {
 	    	log.info("Deleting claim by Id: {}",claimId);
@@ -68,6 +69,7 @@ public class ClaimRestController {
 	    		
 	    	}
 	    
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	    @GetMapping("/dateRange")
 	    public List<Claim> getClaimsBetweenDates(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
 	        log.info("Retrieving claims between {} and {}", startDate, endDate);

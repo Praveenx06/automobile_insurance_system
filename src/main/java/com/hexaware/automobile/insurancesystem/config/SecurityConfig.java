@@ -1,5 +1,10 @@
 package com.hexaware.automobile.insurancesystem.config;
-
+/*
+ * Author : Praveen  
+ * Modified on : 13-Aug-2025 
+ * Description : SecurityConfig
+ * 
+ */
 
 
 import com.hexaware.automobile.insurancesystem.security.JwtAuthFilter;
@@ -40,8 +45,26 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
             .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-                .anyRequest().authenticated()
+//                .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+//                .requestMatchers("/api/users/**").hasAuthority("ADMIN")
+//                .requestMatchers("/auth/**").permitAll() // Public endpoints
+//                .requestMatchers("/**").hasAnyAuthority("ADMIN","USER")
+//                .requestMatchers("/api/addons/**").hasAnyAuthority("ADMIN", "USER")
+//                .requestMatchers("/api/policies/**").hasAnyAuthority("ADMIN", "USER")
+//                .requestMatchers("/api/proposals/**").hasAnyAuthority("ADMIN", "USER")
+//                .requestMatchers("/api/quote/**").hasAnyAuthority("ADMIN", "USER")
+//                .requestMatchers("/api/vehicles/**").hasAnyAuthority("ADMIN", "USER")
+//                .anyRequest().authenticated()
+            		.requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+            	    .requestMatchers("/api/users/**").hasRole("ADMIN")
+            	    .requestMatchers("/auth/**").permitAll()
+            	    .requestMatchers("/**").hasAnyRole("ADMIN", "USER")
+            	    .requestMatchers("/api/addons/**").hasAnyRole("ADMIN", "USER")
+            	    .requestMatchers("/api/policies/**").hasAnyRole("ADMIN", "USER")
+            	    .requestMatchers("/api/proposals/**").hasAnyRole("ADMIN", "USER")
+            	    .requestMatchers("/api/quote/**").hasAnyRole("ADMIN", "USER")
+            	    .requestMatchers("/api/vehicles/**").hasAnyRole("ADMIN", "USER")
+            	    .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

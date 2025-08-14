@@ -1,5 +1,8 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
-
+/* Author : Praveen   
+ * Modified on : 3-Aug-2025
+ * Description : User restcontroller with endpoints
+ * */
 import java.util.List;
 import java.util.Optional;
 
@@ -30,13 +33,15 @@ public class UserRestController {
 	@Autowired
 	IUserService service;
 	
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	 @PostMapping("/add")
 	    public User addUser(@Valid @RequestBody UserDto dto) {
 	        log.info("Adding new user ");
 	        return service.addUser(dto);
 	    }
 	 
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	
+	 @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	 @GetMapping("/{userId}")
 	    public User getById(@PathVariable int userId) {
 	        log.info("Fetching user with ID {}", userId);
@@ -44,7 +49,8 @@ public class UserRestController {
 	    }
 	 
 	
-	 @PreAuthorize("hasAuthority('ADMIN')")
+	 
+	 @PreAuthorize("hasAnyRole('ADMIN')")
 	 @GetMapping("/getall")
 	    public List<User> getAllUsers() {
 	        log.info("Fetching all users");
@@ -52,7 +58,7 @@ public class UserRestController {
 	    }
 	 
 	 
-	 @PreAuthorize("hasAuthority('ADMIN')")
+	 @PreAuthorize("hasAnyRole('ADMIN')")
 	 @PutMapping("/update")
 	    public User updateUser(@Valid @RequestBody User user) {
 	        log.info("Updating user with ID {} ");
@@ -60,19 +66,21 @@ public class UserRestController {
 	    }
 	 
 	 
-	 @PreAuthorize("hasAuthority('ADMIN')")
+	 @PreAuthorize("hasAnyRole('ADMIN')")
 	 @DeleteMapping("/{userId}")
 	    public String deleteUser(@PathVariable int userId) {
 	        log.info("Deleting user with ID {}", userId);
 	        return service.deleteUserById(userId);
 	    }
 	 
+	 @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	 @GetMapping("/aadhaar/{aadhaarNumber}")
 	 public List<User> getByAadhaar(@PathVariable String aadhaarNumber) {
 	     log.info("Fetching users with Aadhaar number {}", aadhaarNumber);
 	     return service.getUsersByAadhaar(aadhaarNumber);
 	 }
 	 
+	 @PreAuthorize("hasAnyRole('ADMIN')")
 	 @GetMapping("/findbyUsername/{name}")
 	 public ResponseEntity<User> getByUsername(@PathVariable String name) {
 	     log.info("Fetching users with username {}", name);
@@ -84,8 +92,9 @@ public class UserRestController {
 	     }	 
 }
 	 
+	 @PreAuthorize("hasAnyRole('ADMIN')")
 	 @GetMapping("/email/{email}")
-	    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+	    
 	    public User getUserByEmail(@PathVariable String email) {
 	        log.info("Controller: getUserByEmail email={}", email);
 	        return service.getUserByEmail(email);

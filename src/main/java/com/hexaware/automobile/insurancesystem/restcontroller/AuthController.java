@@ -1,5 +1,10 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
-
+/*
+ * Author : Praveen  
+ * Modified on : 13-Aug-2025 
+ * Description : AuthController
+ * 
+ */
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +30,7 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final UserRepository userRepository; // your repo
+    private final UserRepository userRepository; 
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
 

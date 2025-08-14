@@ -1,5 +1,8 @@
 package com.hexaware.automobile.insurancesystem.restcontroller;
-
+/* Author : Praveen   
+ * Modified on : 3-Aug-2025
+ * Description : Vehicle restcontroller with endpoints
+ * */
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,41 +30,42 @@ public class VehicleRestController {
 	
 	@Autowired
     private IVehicleService service;
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/add")
     public Vehicle addVehicle(@Valid @RequestBody VehicleDto dto) {
         log.debug("Adding new vehicle: ", dto);
         return service.addVehicle(dto);
     }
 	 
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PutMapping("/update")
     public Vehicle updateVehicle(@RequestBody Vehicle vehicle) {
         log.info("Updating vehicle with ID: ");
         return service.updateVehicle(vehicle);
     }
     
-    @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getById/{vehicleId}")
     public Vehicle getVehicleById(@PathVariable int vehicleId)  {
         log.info("Retrieving vehicle with ID: ", vehicleId);
         return service.getVehicleById(vehicleId);
     }
     
-    @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getAll")
     public List<Vehicle> getAllVehicles() {
         log.debug("Retrieving all vehicles");
         return service.getAllVehicles();
     }
     
-    @PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @DeleteMapping("/deleteById/{vehicleId}")
     public String deleteVehicleById(@PathVariable int vehicleId)  {
         log.info("Deleting vehicle with ID: ", vehicleId);
         return service.deleteVehicleById(vehicleId);
     }
     
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/type/{type}")
     public ResponseEntity<List<Vehicle>> getVehiclesByType(@PathVariable String type) {
     	log.info("getting vehicle by type " );

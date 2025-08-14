@@ -30,35 +30,35 @@ public class PolicyRestController {
 	@Autowired
 	IPolicyService service;
 	
-	 @PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/add")
     public Policy addPolicy(@Valid @RequestBody Policy policy) {
         log.debug("Adding new policy: {}", policy);
         return service.addPolicy(policy);
     }
 	 
-	 @PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PutMapping("/update")
     public Policy updatePolicy(@Valid @RequestBody Policy policy)  {
         log.info("Updating policy with ID: ", policy.getPolicyId());
         return service.updatePolicy(policy);
     }
 
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getById/{policyId}")
     public Policy getPolicyById(@PathVariable int policyId) {
         log.info("Retrieving policy with ID: ", policyId);
         return service.getPolicyById(policyId);
     }
 
-	 @PreAuthorize("hasAuthority('ADMIN','USER')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getAll")
     public List<Policy> getAllPolicies() {
         log.debug("Retrieving all policies");
         return service.getAllPolicies();
     }
     
-    @PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/deleteById/{policyId}")
     public String deletePolicyById(@PathVariable int policyId) {
         log.info("Deleting policy with ID: ", policyId);

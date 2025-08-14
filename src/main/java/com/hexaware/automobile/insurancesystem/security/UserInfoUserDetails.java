@@ -6,6 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+/* Author : Praveen   
+ * Modified on : 13-Aug-2025
+ * Description :UserInfoUserDetails 
+ * */
 
 public class UserInfoUserDetails implements UserDetails {
 

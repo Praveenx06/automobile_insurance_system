@@ -1,5 +1,10 @@
 package com.hexaware.automobile.insurancesystem.exception;
-
+/*
+ * Author : Praveen  
+ * Modified on : 9-Aug-2025 
+ * Description : Overall GlobalException handler 
+ * 
+ */
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
