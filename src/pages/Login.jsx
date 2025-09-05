@@ -1,6 +1,3 @@
-
-
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bg from "../assets/loginlogo.jpg";  
@@ -48,58 +45,104 @@ export default function Login() {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        height: '100vh',
-        width: '100vw',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
-    >
-      <div className="bg-dark text-white p-4 rounded" style={{ minWidth: '320px', opacity: 0.85 }}>
-        <h2 className="text-center mb-4">Welcome to login</h2>
-        
-        <input
-          type="email"
-          className="form-control mb-3"
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          className="form-control mb-3"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        
-        <button
-          className="btn btn-light w-100"
-          onClick={handleLogin}
-          disabled={loading}
+    <>
+      {/* Inject placeholder styling */}
+      <style>
+        {`
+          ::placeholder {
+            color: white !important;
+            opacity: 1;
+          }
+        `}
+      </style>
+
+      <div
+        style={{
+          backgroundImage: `url(${bg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          height: '100vh',
+          width: '100vw',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden',
+          textAlign: 'center'
+        }}
+      >
+        <h1
+          style={{
+            color: '#ffc400e1',
+            fontWeight: 'bold',
+            fontSize: '3.5rem',
+            textShadow: '2px 2px 6px rgba(48, 47, 47, 0.6)',
+            marginBottom: '2rem'
+          }}
         >
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
+          WELCOME TO AUTOMOBILE INSURANCE SYSTEM
+        </h1>
 
-        {error && <div className="text-danger mt-2 text-center">{error}</div>}
+        <div
+          className="text-white shadow-lg"
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            borderRadius: '1rem',
+            padding: '2rem',
+            width: '100%',
+            maxWidth: '400px'
+          }}
+        >
+          <h3 className="text-center mb-4" style={{ fontWeight: '600', letterSpacing: '1px' }}>
+            Login
+          </h3>
 
-       
-        <p className="mt-3 text-center">
-          Don’t have an account?{" "}
-          <span 
-            onClick={() => navigate("/register")} 
-            className="text-info cursor-pointer"
-            style={{ textDecoration: 'underline' }}
+          <div className="mb-3">
+            <input
+              type="email"
+              className="form-control bg-transparent text-white border-light"
+              placeholder="Username"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              style={{ color: 'white' }}
+            />
+          </div>
+
+          <div className="mb-3">
+            <input
+              type="password"
+              className="form-control bg-transparent text-white border-light"
+              placeholder="Password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              style={{ color: 'white' }}
+            />
+          </div>
+
+          <button
+            className="btn btn-warning w-100 fw-bold"
+            onClick={handleLogin}
+            disabled={loading}
           >
-            Register
-          </span>
-        </p>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+
+          {error && <div className="text-danger mt-3 text-center">{error}</div>}
+
+          <p className="mt-4 text-center" style={{ fontSize: '0.9rem' }}>
+            Don’t have an account?{' '}
+            <span
+              onClick={() => navigate('/register')}
+              className="text-info"
+              style={{ textDecoration: 'underline', cursor: 'pointer' }}
+            >
+              Register
+            </span>
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

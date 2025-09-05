@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import PolicyService from "../../services/PolicyService";
+import { useNavigate } from "react-router-dom";
 
 function UserPoliciesPage() {
   const [policies, setPolicies] = useState([]);
@@ -18,6 +19,7 @@ function UserPoliciesPage() {
   const [searchId, setSearchId] = useState("");
   const [editing, setEditing] = useState(false);
   const [userPolicyId, setUserPolicyId] = useState(null);
+  const navigate = useNavigate();
 
   // mapping description to price
   const coveragePrices = {
@@ -227,7 +229,7 @@ function UserPoliciesPage() {
               className="form-select"
               required
             >
-              <option value="">-- Select Coverage --</option>
+              <option value=""> Select Coverage </option>
               <option value="Full body coverage">Full body coverage</option>
               <option value="Side body coverage">Side body coverage</option>
               <option value="Front and Rear body coverage">Front and Rear body coverage</option>
@@ -287,37 +289,53 @@ function UserPoliciesPage() {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {policies.map(p => (
-              <tr key={p.policyId}>
-                <td>{p.policyId}</td>
-                <td>{p.proposalId}</td>
-                <td>{p.startDate}</td>
-                <td>{p.endDate}</td>
-                <td>{p.status}</td>
-                <td>{p.description}</td>
-                <td> <span className="text-success fw-bold">₹ {p.price}</span></td>
-                <td className="text-center">
-                  {p.policyId === userPolicyId && (
-                    <>
-                      <button
-                        className="btn btn-sm btn-warning me-2"
-                        onClick={() => onEdit(p)}
-                      >
-                        Edit
-                      </button>
-                      {/* <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => onDelete(p)}
-                      >
-                        Delete
-                      </button> */}
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+         <tbody>
+    {policies.map(p => (
+      <tr 
+        key={p.policyId} 
+        className={p.policyId === userPolicyId ? "table-success fw-bold" : ""}
+      >
+        <td>{p.policyId}</td>
+        <td>{p.proposalId}</td>
+        <td>{p.startDate}</td>
+        <td>{p.endDate}</td>
+        <td>{p.status}</td>
+        <td>{p.description}</td>
+        <td><span className="text-success fw-bold">₹ {p.price}</span></td>
+        <td className="text-center">
+          {p.policyId === userPolicyId ? (
+            <>
+              {/* Newly added policy → show actions */}
+              <button
+                className="btn btn-sm btn-info me-2"
+                onClick={() => navigate("/user/addons", { state: { policy: p } })}
+              >
+                Proceed with Addons
+              </button>
+              <button
+                className="btn btn-sm btn-success"
+                onClick={() => navigate("/payment", { state: { policy: p } })}
+              >
+                Skip Addons & Pay
+              </button>
+            </>
+          ) : (
+            <>
+              {/* Old policies → only edit if it belongs to user */}
+              {p.policyId === userPolicyId && (
+                <button
+                  className="btn btn-sm btn-warning"
+                  onClick={() => onEdit(p)}
+                >
+                  Edit
+                </button>
+              )}
+            </>
+          )}
+        </td>
+      </tr>
+    ))}
+  </tbody>
         </table>
       )}
     </div>

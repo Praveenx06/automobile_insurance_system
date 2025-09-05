@@ -41,5 +41,35 @@
 .read-the-docs {
   color: #888;
 }
+/* Fix dropdown visibility for all browsers */
+select.form-select {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* Force dropdown options to be visible */
+select.form-select option {
+  background-color: #333 !important;
+  color: #fff !important;
+}
+
+/* Optional: highlight hovered option */
+select.form-select option:hover {
+  background-color: #555 !important;
+}
 
 
+::placeholder {
+  color: white !important;
+  opacity: 1;
+}
+
+.transparent-table {
+  background-color: rgba(255, 255, 255, 0.5) !important; /* White with 50% opacity */
+}
+
+/* To make individual cells transparent, override their background */
+.transparent-table tr td,
+.transparent-table tr th {
+  background-color: inherit !important; /* Inherit from the table, or set a specific rgba */
+}

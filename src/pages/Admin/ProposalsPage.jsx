@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProposalService from "../../services/ProposalService";
+import bg from "../../assets/adminproposal2.jpg";
 
 function ProposalsPage() {
   const [proposals, setProposals] = useState([]);
@@ -10,58 +11,46 @@ function ProposalsPage() {
     status: ""
   });
   const [searchId, setSearchId] = useState("");
-  const [deleteId, setDeleteId] = useState("");   
+  const [deleteId, setDeleteId] = useState("");
   const [editing, setEditing] = useState(false);
   const [message, setMessage] = useState("");
 
   const load = () => {
     ProposalService.getAll()
-      .then(res => setProposals(res.data || []))
-      .catch(() => setMessage("❌ Failed to load proposals (admin only)"));
+      .then((res) => setProposals(res.data || []))
+      .catch(() => setMessage("Failed to load proposals"));
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSave = async (e) => {
+  const handleSave = (e) => {
     e.preventDefault();
     setMessage("");
 
-    const parsedVehicleId = parseInt(form.vehicleId);
-    const parsedProposalId = parseInt(form.proposalId);
-
     if (editing) {
-      // 🚫 Prevent vehicle reuse
-      const conflict = proposals.find(p =>
-        parseInt(p.vehicleId) === parsedVehicleId &&
-        parseInt(p.proposalId) !== parsedProposalId
-      );
-
-      if (conflict) {
-        setMessage(`❌ Vehicle ID ${form.vehicleId} is already assigned to Proposal ID ${conflict.proposalId}`);
-        return;
-      }
-
-      // ✅ Proceed with update
       ProposalService.update(form)
         .then(() => {
-          setMessage("✅ Proposal updated successfully");
+          setMessage("Proposal updated successfully");
           resetForm();
           load();
         })
-        .catch(() => setMessage("❌ Update failed"));
+        .catch(() => setMessage("Update failed"));
     } else {
-      // ✅ Proceed with add
       ProposalService.add(form)
         .then(() => {
-          setMessage("✅ Proposal added successfully");
+          setMessage("Proposal added successfully");
           resetForm();
           load();
         })
-        .catch(() => setMessage("❌ Add failed (check userId and vehicleId exist)"));
+        .catch(() =>
+          setMessage("Add failed (check User ID and Vehicle ID exist)")
+        );
     }
   };
 
@@ -78,111 +67,305 @@ function ProposalsPage() {
 
   const onDeleteById = () => {
     if (!deleteId) {
-      setMessage("⚠️ Please enter an ID to delete");
+      setMessage("Please enter an ID to delete");
       return;
     }
     if (!window.confirm(`Delete proposal with ID ${deleteId}?`)) return;
 
     ProposalService.delete(deleteId)
       .then(() => {
-        setMessage(`✅ Proposal ${deleteId} deleted`);
+        setMessage(`Proposal ${deleteId} deleted successfully`);
         setDeleteId("");
         load();
       })
-      .catch(() => setMessage("❌ Delete failed"));
+      .catch(() => setMessage("Delete failed"));
   };
 
   const onSearch = () => {
     if (!searchId) return;
     ProposalService.getById(searchId)
-      .then(res => setProposals([res.data]))
-      .catch(() => setMessage("❌ Proposal not found"));
+      .then((res) => {
+        if (res && res.data) setProposals([res.data]);
+        else setProposals(res || []);
+      })
+      .catch(() => setMessage("Proposal not found"));
   };
 
   return (
-    <div className="container-fluid mt-4">
-      <h3 className="fw-bold">Proposals</h3>
+    <div
+      className="d-flex flex-column align-items-center"
+      style={{
+        backgroundImage: `url(${bg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        width: "100vw",
+        overflow: "auto",
+        padding: "24px"
+      }}
+    >
+      <div className="container" style={{ maxWidth: "1100px" }}>
+        <h1
+          className="fw-bold text-center mb-4 text-dark text-shadow"
+          style={{ color: "black", fontSize: "2.5rem" , letterSpacing: "2px" }}
+        >
+          PROPOSAL MANAGEMENT
+        </h1>
 
-      {/* Add / Update Form */}
-      <form onSubmit={handleSave} className="mb-3 p-3 border rounded bg-light">
-        <div className="row g-3">
-          <div className="col-md-3">
-            <label>Proposal ID</label>
-            <input name="proposalId" value={form.proposalId} onChange={handleChange} className="form-control" />
+        {/* ✅ Message */}
+        {message && (
+          <div
+            className="alert text-center"
+            style={{
+              maxWidth: "600px",
+              margin: "0 auto 20px auto",
+              background: "rgba(0,0,0,0.6)",
+              color: "#fff",
+              fontWeight: "bold",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
+            }}
+          >
+            {message}
           </div>
-          <div className="col-md-3">
-            <label>User ID</label>
-            <input name="userId" value={form.userId} onChange={handleChange} className="form-control" required />
-          </div>
-          <div className="col-md-3">
-            <label>Vehicle ID</label>
-            <input name="vehicleId" value={form.vehicleId} onChange={handleChange} className="form-control" required />
-          </div>
-          <div className="col-md-3">
-            <label>Status</label>
-            <select name="status" value={form.status} onChange={handleChange} className="form-control" placeholder="e.g. PENDING" required >
-               <option value="">-- Select Status --</option>
-                <option value="PENDING">PENDING</option>
-                <option value="APPROVED">APPROVED</option>
-                <option value="REJECTED">REJECTED</option>
-            </select>
-          </div>
-        </div>
-        <div className="mt-3">
-          <button className="btn btn-success">{editing ? "Update Proposal" : "Add Proposal"}</button>
-          {editing && <button type="button" className="btn btn-secondary ms-2" onClick={resetForm}>Cancel</button>}
-        </div>
-      </form>
+        )}
 
-      {/* Search & Delete By ID */}
-      <div className="mb-3 row g-2">
-        <div className="col-md-3">
-          <input placeholder="Search by Proposal ID" className="form-control" value={searchId} onChange={(e) => setSearchId(e.target.value)} />
-        </div>
-        <div className="col-md-2">
-          <button className="btn btn-info w-100" onClick={onSearch}>Search</button>
-        </div>
-        <div className="col-md-2">
-          <button className="btn btn-primary w-100" onClick={load}>Show All</button>
+        {/* ✅ Add / Update Form */}
+        <form
+          onSubmit={handleSave}
+          className="mb-4 p-4"
+          style={{
+            maxWidth: "900px",
+            margin: "0 auto",
+            background: "rgba(255,255,255,0.15)",
+            backdropFilter: "blur(10px)",
+            borderRadius: "16px",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.2)"
+          }}
+        >
+          <div className="row g-3">
+            <div className="col-md-3">
+              <label className="text-light fw-bold">Proposal ID</label>
+              <input
+                name="proposalId"
+                value={form.proposalId}
+                onChange={handleChange}
+                className="form-control rounded-pill"
+                required
+                type="number"
+              />
+            </div>
+            <div className="col-md-3">
+              <label className="text-light fw-bold">User ID</label>
+              <input
+                name="userId"
+                value={form.userId}
+                onChange={handleChange}
+                className="form-control rounded-pill"
+                required
+                type="number"
+              />
+            </div>
+            <div className="col-md-3">
+              <label className="text-light fw-bold">Vehicle ID</label>
+              <input
+                name="vehicleId"
+                value={form.vehicleId}
+                onChange={handleChange}
+                className="form-control rounded-pill"
+                required
+                type="number"
+              />
+            </div>
+            <div className="col-md-3">
+              <label className="text-light fw-bold">Status</label>
+              <select
+                name="status"
+                value={form.status}
+                onChange={handleChange}
+                className="form-control rounded-pill"
+                required
+              >
+                <option value="">Select</option>
+                <option value="PENDING">Pending</option>
+                <option value="APPROVED">Approved</option>
+                <option value="REJECTED">Rejected</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-3 d-flex gap-2">
+            <button className="btn btn-success rounded-pill px-4">
+              {editing ? "Update Proposal" : "Add Proposal"}
+            </button>
+            {editing && (
+              <button
+                type="button"
+                className="btn btn-secondary rounded-pill px-4"
+                onClick={resetForm}
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+        </form>
+
+        {/* ✅ Search + Delete Section */}
+        <div
+          className="row g-3 mb-4"
+          style={{
+            maxWidth: "900px",
+            margin: "0 auto",
+            background: "rgba(255,255,255,0.1)",
+            padding: "15px",
+            borderRadius: "16px",
+            backdropFilter: "blur(8px)",
+            boxShadow: "0 6px 18px rgba(0,0,0,0.2)"
+          }}
+        >
+          <div className="col-md-3">
+            <input
+              placeholder="Search by Proposal ID"
+              className="form-control rounded-pill"
+              value={searchId}
+              onChange={(e) => setSearchId(e.target.value)}
+              type="number"
+            />
+          </div>
+          <div className="col-md-2 d-grid">
+            <button
+              type="button"
+              className="btn btn-info rounded-pill"
+              onClick={onSearch}
+            >
+              Search
+            </button>
+          </div>
+          <div className="col-md-2 d-grid">
+            <button
+              type="button"
+              className="btn btn-primary rounded-pill"
+              onClick={load}
+            >
+              Show All
+            </button>
+          </div>
+          <div className="col-md-3">
+            <input
+              placeholder="Delete by Proposal ID"
+              className="form-control rounded-pill"
+              value={deleteId}
+              onChange={(e) => setDeleteId(e.target.value)}
+              type="number"
+            />
+          </div>
+          <div className="col-md-2 d-grid">
+            <button
+              type="button"
+              className="btn btn-danger rounded-pill"
+              onClick={onDeleteById}
+            >
+              Delete
+            </button>
+          </div>
         </div>
 
-        <div className="col-md-3">
-          <input placeholder="Delete by Proposal ID" className="form-control" value={deleteId} onChange={(e) => setDeleteId(e.target.value)} />
-        </div>
-        <div className="col-md-2">
-          <button className="btn btn-danger w-100" onClick={onDeleteById}>Delete</button>
-        </div>
+        {/* ✅ Proposals Table */}
+{proposals.length === 0 ? (
+  <p className="text-center text-light fw-bold">No proposals found.</p>
+) : (
+  <div
+    className="table-responsive"
+    style={{
+      maxWidth: "1000px",
+      margin: "0 auto",
+      background: "rgba(255,255,255,0.12)",
+      borderRadius: "16px",
+      overflow: "hidden",
+      backdropFilter: "blur(10px)",
+      boxShadow: "0 8px 20px rgba(0,0,0,0.25)"
+    }}
+  >
+    <table
+      className="table table-hover  opacity-75 transparent-table shadow-sm align-middle mb-0"
+      style={{
+        width: "100%",
+        backgroundColor: "rgba(255,255,255,0.12)",
+        color: "#fff",
+        borderCollapse: "collapse",
+        borderRadius: "12px",
+        overflow: "hidden",
+        boxShadow: "0 0 8px rgba(0,0,0,0.3)",
+        textShadow: "0 1px 2px rgba(0,0,0,0.6)"
+      }}
+    >
+      <thead
+        style={{
+          backgroundColor: "rgba(255,255,255,0.2)",
+          color: "#fff",
+          fontWeight: "bold",
+          textShadow: "0 1px 2px rgba(0,0,0,0.6)"
+        }}
+      >
+        <tr>
+          <th className="text-center p-3">Proposal ID</th>
+          <th className="text-center p-3">User ID</th>
+          <th className="text-center p-3">Vehicle ID</th>
+          <th className="text-center p-3">Status</th>
+          <th className="text-center p-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {proposals.map((p) => (
+          <tr
+            key={p.proposalId}
+            style={{
+              backgroundColor: "rgba(255,255,255,0.08)",
+              color: "#fff",
+              textShadow: "0 1px 2px rgba(0,0,0,0.6)"
+            }}
+          >
+            <td className="text-center p-2">{p.proposalId}</td>
+            <td className="text-center p-2">{p.userId}</td>
+            <td className="text-center p-2">{p.vehicleId}</td>
+
+            {/* ✅ Status with color */}
+            <td className="text-center p-2">
+              <span
+                className={`fw-bold ${
+                  p.status === "APPROVED"
+                    ? "text-success"
+                    : p.status === "REJECTED"
+                    ? "text-danger"
+                    : p.status === "PENDING"
+                    ? "text-warning"
+                    : "text-light"
+                }`}
+              >
+                {p.status}
+              </span>
+            </td>
+
+            <td className="text-center p-2">
+              <div className="d-flex justify-content-center gap-2">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-warning rounded-pill px-3"
+                  onClick={() => onEdit(p)}
+                >
+                  Edit
+                </button>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
       </div>
-
-      {message && <div className="alert alert-info">{message}</div>}
-
-      {/* Proposal List */}
-      {proposals.length === 0 ? <p>No proposals found.</p> : (
-        <table className="table table-striped table-bordered">
-          <thead className="table-dark">
-            <tr>
-              <th>ID</th>
-              <th>User ID</th>
-              <th>Vehicle ID</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {proposals.map(p => (
-              <tr key={p.proposalId}>
-                <td>{p.proposalId}</td>
-                <td>{p.userId}</td>
-                <td>{p.vehicleId}</td>
-                <td>{p.status}</td>
-                <td>
-                  <button className="btn btn-sm btn-secondary" onClick={() => onEdit(p)}>Edit</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
     </div>
   );
 }
