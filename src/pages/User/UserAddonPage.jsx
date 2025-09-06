@@ -1,7 +1,8 @@
 
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";  // ✅ navigation
+import { useNavigate } from "react-router-dom"; 
 import AddonService from "../../services/AddonService";
+import bg from "../../assets/1useraddon.jpeg";
 
 function UserAddonPage() {
   const [addons, setAddons] = useState([]);
@@ -32,58 +33,103 @@ function UserAddonPage() {
     0
   );
 
-  // ✅ Navigate to payment page with selected addons
   const proceedToPayment = () => {
     navigate("/payment", { state: { selectedAddons, totalCost } });
   };
 
   return (
-    <div className="container mt-4">
-      <h3 className="fw-bold mb-3">Available Add-ons</h3>
+    <div
+      className="d-flex flex-column align-items-center"
+      style={{
+        minHeight: "100vh",
+        width: "100vw",
+        backgroundImage: `url(${bg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        padding: "24px",
+        overflow: "auto",
+      }}
+    >
+      <div className="container">
+        <h1 className="fw-bold mb-4 text-center text-dark">AVAILABLE ADD-ON'S</h1>
+        <br></br>
+        <br></br>
+        <h2 className="fw-bold mb-4 text-center text-dark">Please select the suitable addon according to your requirement</h2>
 
-      {message && <div className="alert alert-info">{message}</div>}
+        {message && <div className="alert alert-info">{message}</div>}
 
-      {addons.length === 0 ? (
-        <p>No addons available.</p>
-      ) : (
-        <table className="table table-bordered table-striped">
-          <thead className="table-dark">
-            <tr>
-              <th>Select</th>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Additional Cost</th>
-            </tr>
-          </thead>
-          <tbody>
+        {addons.length === 0 ? (
+          <p className="text-light">No addons available.</p>
+        ) : (
+          <div className="row g-4">
             {addons.map((a) => (
-              <tr key={a.addOnId}>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={selectedAddons.some((sa) => sa.addOnId === a.addOnId)}
-                    onChange={() => handleSelect(a)}
-                  />
-                </td>
-                <td>{a.addOnId}</td>
-                <td>{a.name}</td>
-                <td>
-                  <span className="text-success fw-bold">₹{a.additionalCost}</span>
-                </td>
-              </tr>
+              <div
+  key={a.addOnId}
+  className="col-md-4 col-sm-6"
+>
+  <div
+    className={`card h-100 ${
+      selectedAddons.some((sa) => sa.addOnId === a.addOnId)
+        ? "border-success"
+        : ""
+    }`}
+    style={{
+      background: "rgba(255, 255, 255, 0.9)",
+      borderRadius: "18px", // 🔹 rounded corners
+      boxShadow: "0 6px 18px rgba(0, 0, 0, 0.25)", // 🔹 stronger shadow
+      transition: "transform 0.2s ease, box-shadow 0.2s ease",
+      cursor: "pointer",
+    }}
+    onMouseEnter={(e) =>
+      (e.currentTarget.style.boxShadow = "0 8px 22px rgba(0,0,0,0.35)")
+    }
+    onMouseLeave={(e) =>
+      (e.currentTarget.style.boxShadow = "0 6px 18px rgba(0,0,0,0.25)")
+    }
+  >
+    <div className="card-body d-flex flex-column justify-content-between">
+      <div className="text-dark fw-bold">
+        <h5 className="card-title text-danger fw-bold">{a.name}</h5>
+        <p className="mb-2 text-primary">
+          <strong>ID:</strong> {a.addOnId}
+        </p>
+        <p className="text-success fw-bold">₹{a.additionalCost}</p>
+      </div>
+      <div className="form-check mt-3">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          checked={selectedAddons.some((sa) => sa.addOnId === a.addOnId)}
+          onChange={() => handleSelect(a)}
+          id={`addon-${a.addOnId}`}
+          style={{ accentColor: "black" }} // ✅ black checkbox
+        />
+        <label
+          className="form-check-label text-dark fw-bold"
+          htmlFor={`addon-${a.addOnId}`}
+        >
+          Select Add-on
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
             ))}
-          </tbody>
-        </table>
-      )}
+          </div>
+        )}
 
-      {selectedAddons.length > 0 && (
-        <div className="mt-4 text-end">
-          <h5>Total: <span className="text-success fw-bold">₹{totalCost}</span></h5>
-          <button className="btn btn-primary mt-2" onClick={proceedToPayment}>
-            Proceed to Payment
-          </button>
-        </div>
-      )}
+        {selectedAddons.length > 0 && (
+          <div className="mt-4 text-end">
+            <h5 className="text-dark">
+              Total: <span className="text-success fw-bold">₹{totalCost}</span>
+            </h5>
+            <button className="btn btn-primary mt-2" onClick={proceedToPayment}>
+              Proceed to Payment
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

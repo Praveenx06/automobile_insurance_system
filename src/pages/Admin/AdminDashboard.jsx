@@ -1,13 +1,13 @@
 
 
 import { Link } from "react-router-dom";
-import bg from "../../assets/admindash.jpg";
+import bg from "../../assets/admincommon.jpg";
 
 function AdminDashboard() {
   // Shared button style for transparency and readability
   const buttonStyle = {
     backgroundColor: "rgba(0, 0, 0, 0.75)",
-    color: "#fff",
+    color: "#e5e4e4ff",
     border: "none",
     transition: "all 0.3s ease",
   };
@@ -47,7 +47,7 @@ function AdminDashboard() {
             textShadow: "2px 2px 8px rgba(0,0,0,0.7)",
           }}
         >
-          ADMIN DASHBOARD
+         WELCOME ADMIN !!
         </h1>
 
         <div className="row g-3">

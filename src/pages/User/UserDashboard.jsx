@@ -1,7 +1,8 @@
 
 
 import { Link } from "react-router-dom";
-import bg from "../../assets/admindash.jpg";
+import bg from "../../assets/userpolicy22.jpg";
+
 
 // Import card images
 import vehicleImg from "../../assets/cardvehicle1.jpg";
@@ -46,7 +47,7 @@ function UserDashboard() {
         }}
       >
         <h1
-          className="text-center mb-5"
+          className="text-center mb-5 text-dark"
           style={{
             fontSize: "2.5rem",
             fontWeight: "800",
@@ -54,7 +55,7 @@ function UserDashboard() {
             textShadow: "2px 2px 8px rgba(0,0,0,0.7)",
           }}
         >
-          WELCOME USER! Choose your service by starting with your vehicle
+          WELCOME !!! Choose your service by starting with your vehicle
         </h1>
 
         <div className="row g-4">
@@ -88,7 +89,7 @@ function UserDashboard() {
                     }}
                   />
                   <div className="card-body text-center">
-                    <h5 className="card-title text-white fw-bold">
+                    <h5 className="card-title text-dark fw-bold">
                       {item.label}
                     </h5>
                   </div>
