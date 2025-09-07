@@ -38,6 +38,6 @@ public class ClaimDto {
     private String status;
 
     @NotNull(message = "policyId is required")
-    @Min(value = 1, message = "policyId must be a positive integer")
+    @Min(value = 0, message = "policyId must be a positive integer")
     private int policyId;
 }

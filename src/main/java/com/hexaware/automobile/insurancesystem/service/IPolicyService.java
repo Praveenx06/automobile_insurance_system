@@ -5,18 +5,18 @@ package com.hexaware.automobile.insurancesystem.service;
  * */
 import java.util.List;
 
-import com.hexaware.automobile.insurancesystem.entities.Policy;
+import com.hexaware.automobile.insurancesystem.dto.PolicyDto;
 
 
 public interface IPolicyService {
 	
-		public Policy addPolicy(Policy policy);
+		public PolicyDto addPolicy(PolicyDto policy);
 
-	    public Policy getPolicyById(int policyId);
+	    public PolicyDto getPolicyById(int policyId);
 
-	    public List<Policy> getAllPolicies();
+	    public List<PolicyDto> getAllPolicies();
 
-	    public Policy updatePolicy(Policy policy) ;
+	    public PolicyDto updatePolicy(PolicyDto policy) ;
 	    public String deletePolicyById(int policyId);
 	
 

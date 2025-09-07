@@ -26,39 +26,65 @@ public class ClaimServiceImp implements IClaimService{
 
 	 @Autowired
 	    PolicyRepository repo1;
+	 
+	  public ClaimDto mapToDto(Claim claim) {
+	        ClaimDto dto = new ClaimDto();
+	        dto.setClaimId(claim.getClaimId());
+	        dto.setClaimDate(claim.getClaimDate());
+	        dto.setClaimReason(claim.getClaimReason());
+	        dto.setStatus(claim.getStatus());
+	        dto.setPolicyId(claim.getPolicy().getPolicyId());
+	        return dto;
+	    }
+	 
+
+	  @Override
+	  public ClaimDto addClaim(ClaimDto dto) {
+	      Policy policy = repo1.findById(dto.getPolicyId())
+	              .orElseThrow(() -> new ClaimNotFoundException("Policy with ID " + dto.getPolicyId() + " not found"));
+
+	      Claim claim = new Claim();
+	      claim.setClaimId(dto.getClaimId());
+	      claim.setClaimDate(dto.getClaimDate());
+	      claim.setClaimReason(dto.getClaimReason());
+	      claim.setStatus(dto.getStatus());
+	      claim.setPolicy(policy);
+
+	      Claim savedClaim = repo.save(claim);
+
+	      // convert entity back to DTO
+	      return mapToDto(savedClaim);
+	  }
+
 	@Override
-	public Claim addClaim(ClaimDto dto) {
-		Policy policy = repo1.findById(dto.getPolicyId())
-                .orElseThrow(() -> new ClaimNotFoundException("Policy with ID " + dto.getPolicyId() + " not found"));
-
-        Claim claim = new Claim();
-        claim.setClaimId(dto.getClaimId());
-        claim.setClaimDate(dto.getClaimDate());
-        claim.setClaimReason(dto.getClaimReason());
-        claim.setStatus(dto.getStatus());
-        claim.setPolicy(policy);
-
-        return repo.save(claim);
+	public ClaimDto getClaimById(int claimId) {
+	    Claim claim = repo.findById(claimId)
+	            .orElseThrow(() -> new ClaimNotFoundException("ClaimId " + claimId + " not found"));
+	    return mapToDto(claim);
 	}
 
 	@Override
-	public Claim getClaimById(int claimId) throws ClaimNotFoundException {
-		
-		return repo.findById(claimId).orElseThrow(() ->  new ClaimNotFoundException("ClaimId " + claimId + " not found"));
+	public List<ClaimDto> getAllClaims() {
+	    return repo.findAll()
+	               .stream()
+	               .map(this::mapToDto)
+	               .toList();
 	}
 
 	@Override
-	public List<Claim> getAllClaims() {
-		
-		return repo.findAll();
-	}
+	public ClaimDto updateClaim(ClaimDto dto) {
+	    Claim claim = repo.findById(dto.getClaimId())
+	                      .orElseThrow(() -> new ClaimNotFoundException("Claim not found"));
 
-	@Override
-	public Claim updateClaim(Claim claim) throws ClaimNotFoundException {
-		if(!repo.existsById(claim.getClaimId())) {
-			throw new ClaimNotFoundException("Cannot update " +claim.getClaimId() +"not found");
-		}
-		return repo.save(claim);
+	    claim.setClaimDate(dto.getClaimDate());
+	    claim.setClaimReason(dto.getClaimReason());
+	    claim.setStatus(dto.getStatus());
+
+	    Policy policy = repo1.findById(dto.getPolicyId())
+	                         .orElseThrow(() -> new ClaimNotFoundException("Policy not found"));
+	    claim.setPolicy(policy);
+
+	    return mapToDto(repo.save(claim));
 	}
 
 	@Override

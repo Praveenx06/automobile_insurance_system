@@ -21,4 +21,10 @@ public class DocumentDto {
 	    @Min(value = 1)
 	    private int proposalId;
 
+	    
+	    public DocumentDto(int docId, String docType, int proposalId) {
+	        this.docId = docId;
+	        this.docType = docType;
+	        this.proposalId = proposalId;
+	    }
 }

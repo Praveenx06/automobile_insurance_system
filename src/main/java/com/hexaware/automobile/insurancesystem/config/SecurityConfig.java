@@ -13,6 +13,7 @@ import com.hexaware.automobile.insurancesystem.security.JwtAuthenticationEntryPo
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -55,15 +56,22 @@ public class SecurityConfig {
 //                .requestMatchers("/api/quote/**").hasAnyAuthority("ADMIN", "USER")
 //                .requestMatchers("/api/vehicles/**").hasAnyAuthority("ADMIN", "USER")
 //                .anyRequest().authenticated()
+            		.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             		.requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-            	    .requestMatchers("/api/users/**").hasRole("ADMIN")
+//            	    .requestMatchers("/api/users/**").hasRole("ADMIN")
+            	    .requestMatchers("/api/users/add").permitAll()
             	    .requestMatchers("/auth/**").permitAll()
             	    .requestMatchers("/**").hasAnyRole("ADMIN", "USER")
+            	    .requestMatchers("/api/users/getall").hasRole("ADMIN")
+            	    .requestMatchers("/api/users/update").hasRole("ADMIN")
+            	    .requestMatchers("/api/users/deletebyId/**").hasRole("ADMIN")
+            	    .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "USER")
             	    .requestMatchers("/api/addons/**").hasAnyRole("ADMIN", "USER")
             	    .requestMatchers("/api/policies/**").hasAnyRole("ADMIN", "USER")
             	    .requestMatchers("/api/proposals/**").hasAnyRole("ADMIN", "USER")
             	    .requestMatchers("/api/quote/**").hasAnyRole("ADMIN", "USER")
             	    .requestMatchers("/api/vehicles/**").hasAnyRole("ADMIN", "USER")
+            	    
             	    .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

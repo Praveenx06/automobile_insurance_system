@@ -37,13 +37,13 @@ public class Proposal {
     
     private String status;  
 
-    @OneToOne(mappedBy = "proposal", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "proposal", cascade = CascadeType.ALL,orphanRemoval = true)
     private Quote quote;
 
-    @OneToMany(mappedBy = "proposal", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "proposal", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Document> documents;
 
-    @OneToOne(mappedBy = "proposal", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "proposal", cascade = CascadeType.ALL,orphanRemoval = true)
     private Policy policy;
     
     @ManyToMany

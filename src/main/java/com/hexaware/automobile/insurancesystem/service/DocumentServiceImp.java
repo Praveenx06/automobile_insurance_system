@@ -4,6 +4,7 @@ package com.hexaware.automobile.insurancesystem.service;
  * Description : Document service implementation calss 
  * */
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,41 +21,54 @@ public class DocumentServiceImp implements IDocumentService{
 
 	@Autowired
 	DocumentRepository repo;
-	@Autowired
-	  ProposalRepository repo1;
 	
-	@Override
-	public Document addDocument(DocumentDto dto) {
-		Document document = new Document();
-        document.setDocId(dto.getDocId());
-        document.setDocType(dto.getDocType());
+	 @Autowired
+	     ProposalRepository proposalRepository;
 
-        Proposal proposal = repo1.findById(dto.getProposalId())
-                .orElseThrow(() -> new RuntimeException("Proposal not found"));
-        document.setProposal(proposal);
+	    
+	 @Override
+	    public DocumentDto addDocument(DocumentDto dto) {
+	        Proposal proposal = proposalRepository.findById(dto.getProposalId())
+	                .orElseThrow(() -> new RuntimeException("Proposal not found with id: " + dto.getProposalId()));
 
-        return repo.save(document);
-	}
+	        Document document = new Document();
+	        document.setDocId(dto.getDocId());
+	        document.setDocType(dto.getDocType());
+	        document.setProposal(proposal);
 
-	@Override
-	public Document getDocumentById(int docId) throws DocumentNotFoundException {
-		
-		return repo.findById(docId).orElseThrow(() -> new DocumentNotFoundException("Document id "+ docId + " not found")) ;
-	}
+	        Document saved = repo.save(document);
+	        return mapToDto(saved);
+	    }
 
-	@Override
-	public List<Document> getAllDocuments() {
-		
-		return repo.findAll();
-	}
+	    @Override
+	    public DocumentDto getDocumentById(int docId) throws DocumentNotFoundException {
+	        Document document = repo.findById(docId)
+	                .orElseThrow(() -> new DocumentNotFoundException("Document not found with id: " + docId));
+	        return mapToDto(document);
+	    }
 
-	@Override
-	public Document updateDocument(Document document) throws DocumentNotFoundException {
-		if(!repo.existsById(document.getDocId())) {
-			throw new DocumentNotFoundException ("Cannot update document ");
-		}
-		return repo.save(document);
-	}
+	    @Override
+	    public List<DocumentDto> getAllDocuments() {
+	        return repo.findAll()
+	                .stream()
+	                .map(this::mapToDto)
+	                .collect(Collectors.toList());
+	    }
+
+	    @Override
+	    public DocumentDto updateDocument(DocumentDto dto) throws DocumentNotFoundException {
+	        Document document = repo.findById(dto.getDocId())
+	                .orElseThrow(() -> new DocumentNotFoundException("Document not found with id: " + dto.getDocId()));
+
+	        Proposal proposal = proposalRepository.findById(dto.getProposalId())
+	                .orElseThrow(() -> new RuntimeException("Proposal not found with id: " + dto.getProposalId()));
+
+	        document.setDocType(dto.getDocType());
+	        document.setProposal(proposal);
+
+	        Document updated = repo.save(document);
+	        return mapToDto(updated);
+	    }
 
 	@Override
 	public String deleteDocumentById(int docId) {
@@ -66,9 +80,18 @@ public class DocumentServiceImp implements IDocumentService{
 
 	}
 
-	@Override
-	public List<Document> getDocumentsByProposalId(int proposalId) {
-		 return repo.findByProposal_ProposalId(proposalId);
-	}
+	 @Override
+	    public List<DocumentDto> getDocumentsByProposalId(int proposalId) {
+	        List<Document> documents = repo.findByProposal_ProposalId(proposalId);
+	        return documents.stream().map(this::mapToDto).collect(Collectors.toList());
+	    }
+	
+	private DocumentDto mapToDto(Document document) {
+        return new DocumentDto(
+                document.getDocId(),
+                document.getDocType(),
+                document.getProposal().getProposalId()
+        );
+    }
 
 }

@@ -1,12 +1,10 @@
 package com.hexaware.automobile.insurancesystem.service;
 /* Author : Praveen   
  * Modified on : 12-Aug-2025
- * Description : QuoteServiceImpTest
- * */
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+ * Description : QuoteServiceImpTest (DTO based)
+ */
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
@@ -17,8 +15,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.hexaware.automobile.insurancesystem.entities.Quote;
-
+import com.hexaware.automobile.insurancesystem.dto.QuoteDto;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
@@ -30,29 +27,29 @@ class QuoteServiceImpTest {
     @Test
     @Order(1)
     public void testAddQuote() {
-        Quote quote = new Quote();
-        quote.setQuoteId(5001);
-        quote.setPremiumAmount(25000.0);
-        quote.setProposal(null);  // assuming nullable; else setup Proposal entity
+        QuoteDto dto = new QuoteDto(5001, 25000.0, 1001);  // ✅ Use existing proposalId (ensure 1001 exists in DB)
+        QuoteDto saved = quoteService.addQuote(dto);
 
-        Quote saved = quoteService.addQuote(quote);
         assertNotNull(saved);
         assertEquals(5001, saved.getQuoteId());
         assertEquals(25000.0, saved.getPremiumAmount());
+        assertEquals(1001, saved.getProposalId());
     }
 
     @Test
     @Order(2)
     public void testGetQuoteById() {
-        Quote quote = quoteService.getQuoteById(5001);
-        assertNotNull(quote);
-        assertEquals(5001, quote.getQuoteId());
+        QuoteDto dto = quoteService.getQuoteById(5001);
+
+        assertNotNull(dto);
+        assertEquals(5001, dto.getQuoteId());
     }
 
     @Test
     @Order(3)
     public void testGetAllQuotes() {
-        List<Quote> quotes = quoteService.getAllQuotes();
+        List<QuoteDto> quotes = quoteService.getAllQuotes();
+
         assertNotNull(quotes);
         assertTrue(quotes.size() > 0);
     }
@@ -60,9 +57,10 @@ class QuoteServiceImpTest {
     @Test
     @Order(4)
     public void testUpdateQuote() {
-        Quote quote = quoteService.getQuoteById(5001);
-        quote.setPremiumAmount(30000.0);
-        Quote updated = quoteService.updateQuote(quote);
+        QuoteDto dto = quoteService.getQuoteById(5001);
+        dto.setPremiumAmount(30000.0);
+
+        QuoteDto updated = quoteService.updateQuote(dto);
         assertEquals(30000.0, updated.getPremiumAmount());
     }
 
@@ -70,9 +68,10 @@ class QuoteServiceImpTest {
     @Order(5)
     public void testDeleteQuoteById() {
         String msg = quoteService.deleteQuoteById(5001);
+
         assertEquals("Quote deleted successfully", msg);
-        assertThrows(Exception.class, () -> quoteService.getQuoteById(5001));
+
+        Exception ex = assertThrows(RuntimeException.class, () -> quoteService.getQuoteById(5001));
+        assertTrue(ex.getMessage().contains("Quote not found with ID"));
     }
-
-
 }

@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Past;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Entity
@@ -27,6 +28,7 @@ public class User {
 	    private String address;
 	    private String email;
 	    private String password;
+	    
 	    private LocalDate dateOfBirth;
 	    private int age; 
 	    private String aadhaarNumber;

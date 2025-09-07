@@ -21,14 +21,16 @@ import com.hexaware.automobile.insurancesystem.dto.ClaimDto;
 import com.hexaware.automobile.insurancesystem.entities.Claim;
 import com.hexaware.automobile.insurancesystem.entities.Policy;
 import com.hexaware.automobile.insurancesystem.repository.PolicyRepository;
+
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ClaimServiceImpTest {
-	@Autowired
-     ClaimServiceImp claimService;
 
     @Autowired
-     PolicyRepository policyRepo;
+    private ClaimServiceImp claimService;
+
+    @Autowired
+    private PolicyRepository policyRepo;
 
     @Test
     @Order(1)
@@ -45,7 +47,7 @@ class ClaimServiceImpTest {
         dto.setClaimReason("Accident damage");
         dto.setStatus("PENDING");
 
-        Claim savedClaim = claimService.addClaim(dto);
+        ClaimDto savedClaim = claimService.addClaim(dto);
         assertNotNull(savedClaim);
         assertEquals("PENDING", savedClaim.getStatus());
     }
@@ -53,7 +55,7 @@ class ClaimServiceImpTest {
     @Test
     @Order(2)
     public void testGetClaimById() {
-        Claim claim = claimService.getClaimById(500);
+        ClaimDto claim = claimService.getClaimById(500);
         assertNotNull(claim);
         assertEquals("PENDING", claim.getStatus());
     }
@@ -61,16 +63,16 @@ class ClaimServiceImpTest {
     @Test
     @Order(3)
     public void testGetAllClaims() {
-        List<Claim> claims = claimService.getAllClaims();
+        List<ClaimDto> claims = claimService.getAllClaims();
         assertTrue(claims.size() > 0);
     }
 
     @Test
     @Order(4)
     public void testUpdateClaim() {
-        Claim claim = claimService.getClaimById(500);
+        ClaimDto claim = claimService.getClaimById(500);
         claim.setStatus("APPROVED");
-        Claim updatedClaim = claimService.updateClaim(claim);
+        ClaimDto updatedClaim = claimService.updateClaim(claim);
         assertEquals("APPROVED", updatedClaim.getStatus());
     }
 
@@ -90,5 +92,3 @@ class ClaimServiceImpTest {
         assertEquals("Record deleted successfully", result);
     }
 }
-	
-

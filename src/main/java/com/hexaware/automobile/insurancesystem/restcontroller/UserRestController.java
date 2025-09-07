@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ import com.hexaware.automobile.insurancesystem.service.IUserService;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-
+@CrossOrigin(origins ="http://localhost:5173/")
 @RestController
 @Slf4j
 @RequestMapping("/api/users")
@@ -33,7 +34,7 @@ public class UserRestController {
 	@Autowired
 	IUserService service;
 	
-	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+//	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	 @PostMapping("/add")
 	    public User addUser(@Valid @RequestBody UserDto dto) {
 	        log.info("Adding new user ");
@@ -52,10 +53,11 @@ public class UserRestController {
 	 
 	 @PreAuthorize("hasAnyRole('ADMIN')")
 	 @GetMapping("/getall")
-	    public List<User> getAllUsers() {
+	    public List<UserDto> getAllUsers() {
 	        log.info("Fetching all users");
 	        return service.getAllUser();
 	    }
+	 
 	 
 	 
 	 @PreAuthorize("hasAnyRole('ADMIN')")
@@ -67,7 +69,7 @@ public class UserRestController {
 	 
 	 
 	 @PreAuthorize("hasAnyRole('ADMIN')")
-	 @DeleteMapping("/{userId}")
+	 @DeleteMapping("deletebyId/{userId}")
 	    public String deleteUser(@PathVariable int userId) {
 	        log.info("Deleting user with ID {}", userId);
 	        return service.deleteUserById(userId);

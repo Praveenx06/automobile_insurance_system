@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.hexaware.automobile.insurancesystem.service.IVehicleService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
+@CrossOrigin(origins ="http://localhost:5173/")
 @RestController
 @RequestMapping("/api/vehicles")
 public class VehicleRestController {
@@ -46,14 +48,14 @@ public class VehicleRestController {
     
 	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getById/{vehicleId}")
-    public Vehicle getVehicleById(@PathVariable int vehicleId)  {
+    public VehicleDto getVehicleById(@PathVariable int vehicleId)  {
         log.info("Retrieving vehicle with ID: ", vehicleId);
         return service.getVehicleById(vehicleId);
     }
     
 	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getAll")
-    public List<Vehicle> getAllVehicles() {
+    public List<VehicleDto> getAllVehicles() {
         log.debug("Retrieving all vehicles");
         return service.getAllVehicles();
     }
@@ -67,9 +69,9 @@ public class VehicleRestController {
     
 	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/type/{type}")
-    public ResponseEntity<List<Vehicle>> getVehiclesByType(@PathVariable String type) {
+    public ResponseEntity<List<VehicleDto>> getVehiclesByType(@PathVariable String type) {
     	log.info("getting vehicle by type " );
-        List<Vehicle> vehicles = service.getVehiclesByType(type);
+        List<VehicleDto> vehicles = service.getVehiclesByType(type);
         return ResponseEntity.ok(vehicles);
     }
 

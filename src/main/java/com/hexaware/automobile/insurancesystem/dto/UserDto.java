@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -37,7 +38,7 @@ public class UserDto {
     @Size(min = 6)
     private String password;
 
-    @FutureOrPresent(message = "Date of birth must be present or future") 
+    @Past(message = "Date of birth must be present or future") 
     private LocalDate dateOfBirth;
 
     @NotNull

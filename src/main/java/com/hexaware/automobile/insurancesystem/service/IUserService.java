@@ -15,7 +15,7 @@ public interface IUserService {
 
 	public User addUser(UserDto dto) ;
 	public User getById(int userId) ;
-	public List<User> getAllUser();
+	public List<UserDto> getAllUser();
 	public User updateAddon(User user)  ;
 	public String deleteUserById(int userId);
 	public List<User> getUsersByAadhaar(String aadhaarNumber);

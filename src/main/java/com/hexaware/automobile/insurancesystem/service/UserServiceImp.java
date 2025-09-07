@@ -49,9 +49,27 @@ public class UserServiceImp implements IUserService {
 	}
 
 	@Override
-	public List<User> getAllUser() {
+	public List<UserDto> getAllUser() {
+		 List<User> users = repo.findAll();
+
+		    return users.stream()
+		            .map(u -> {
+		                UserDto dto = new UserDto();
+		                dto.setUserId(u.getUserId());
+		                dto.setName(u.getName());
+		                dto.setAddress(u.getAddress());
+		                dto.setEmail(u.getEmail());
+		                dto.setDateOfBirth(u.getDateOfBirth());
+		                dto.setAge(u.getAge());
+		                dto.setAadhaarNumber(u.getAadhaarNumber());
+		                dto.setPanNumber(u.getPanNumber());
+		                dto.setRoles(u.getRoles()); 
+		               
+		                return dto;
+		            })
+		            .toList();
 		
-		return repo.findAll();
+		
 	}
 
 	@Override

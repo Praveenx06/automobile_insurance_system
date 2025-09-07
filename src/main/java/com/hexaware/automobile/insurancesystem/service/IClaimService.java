@@ -12,13 +12,13 @@ import com.hexaware.automobile.insurancesystem.entities.Claim;
 
 public interface IClaimService {
 	
-	public Claim addClaim(ClaimDto dto);
+	public ClaimDto addClaim(ClaimDto dto);
 
-    public Claim getClaimById(int claimId);
+    public ClaimDto getClaimById(int claimId);
 
-    public List<Claim> getAllClaims();
+    public List<ClaimDto> getAllClaims();
 
-    public Claim updateClaim(Claim claim) ;
+    public ClaimDto updateClaim(ClaimDto claim) ;
     public String deleteClaimById(int claimId) ;
 
     public List<Claim> getClaimsBetweenDates(LocalDate startDate, LocalDate endDate);

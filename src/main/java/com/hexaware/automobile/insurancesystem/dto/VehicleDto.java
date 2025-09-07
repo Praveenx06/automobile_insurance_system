@@ -24,9 +24,7 @@ public class VehicleDto {
     message = "type must be one of: CAR, BIKE, VAN, TRUCK")
     private String type;
 
-    @NotBlank(message = "Make cannot be blank")
-    private String make;
-
+    
     @NotBlank(message = "Model cannot be blank")
     private String model;
 

@@ -4,6 +4,7 @@ package com.hexaware.automobile.insurancesystem.service;
  * Description : Vehicle service implementation calss 
  * */
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,15 @@ import com.hexaware.automobile.insurancesystem.repository.VehicleRepository;
 public class VehicleServiceImp implements IVehicleService {
 	@Autowired
 	VehicleRepository repo;
-
+	private VehicleDto convertToDto(Vehicle v) {
+        VehicleDto dto = new VehicleDto();
+        dto.setVehicleId(v.getVehicleId());
+        dto.setType(v.getType());
+        dto.setModel(v.getModel());
+        dto.setYear(v.getYear());
+        return dto;
+    }
+	
 	@Override
 	public Vehicle addVehicle(VehicleDto dto) {
 	
@@ -37,28 +46,31 @@ public class VehicleServiceImp implements IVehicleService {
 		
 	}
 
-	@Override
-	public Vehicle getVehicleById(int vehicleId) throws VehicleNotFoundException {
-		return repo.findById(vehicleId).orElseThrow(() -> new VehicleNotFoundException("Vehicle ID " + vehicleId + " not found"));
-	
-	}
+	  @Override
+	    public VehicleDto getVehicleById(int vehicleId) throws VehicleNotFoundException {
+	        Vehicle v = repo.findById(vehicleId)
+	                .orElseThrow(() -> new VehicleNotFoundException("Vehicle ID " + vehicleId + " not found"));
+	        return convertToDto(v);
+	    }
 
-	@Override
-	public List<Vehicle> getAllVehicles() {
 	
-		return repo.findAll();
-	}
-
 	@Override
 	public String deleteVehicleById(int vehicleId) {
 		repo.deleteById(vehicleId);
 		return "Vehicle deleted successfully";
 	}
 	
-    @Override
-    public List<Vehicle> getVehiclesByType(String type) {
-        return repo.findByType(type);
-    }
-
+	 @Override
+	    public List<VehicleDto> getVehiclesByType(String type) {
+	        return repo.findByType(type).stream()
+	                .map(this::convertToDto)
+	                .collect(Collectors.toList());
+	    }
+	 @Override
+	    public List<VehicleDto> getAllVehicles() {
+	        return repo.findAll().stream()
+	                .map(this::convertToDto)
+	                .collect(Collectors.toList());
+	    }
 
 }

@@ -4,47 +4,95 @@ package com.hexaware.automobile.insurancesystem.service;
  * Description : Quote service implementation calss 
  * */
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hexaware.automobile.insurancesystem.dto.QuoteDto;
+import com.hexaware.automobile.insurancesystem.entities.Proposal;
 import com.hexaware.automobile.insurancesystem.entities.Quote;
-import com.hexaware.automobile.insurancesystem.exception.QuoteNotFoundException;
+
+import com.hexaware.automobile.insurancesystem.repository.ProposalRepository;
 import com.hexaware.automobile.insurancesystem.repository.QuoteRepository;
+
+import jakarta.transaction.Transactional;
 @Service
 public class QuoteServiceImp implements IQuoteService {
 
 	 @Autowired
 	    private QuoteRepository repo;
+	 
+	   @Autowired
+	    private ProposalRepository proposalRepo;
+
+	    // ✅ Convert Entity → DTO
+	    private QuoteDto convertToDto(Quote quote) {
+	        return new QuoteDto(
+	                quote.getQuoteId(),
+	                quote.getPremiumAmount(),
+	                quote.getProposal().getProposalId()
+	        );
+	    }
 	
-	@Override
-	public Quote addQuote(Quote quote) {
-		return repo.save(quote);
-	}
+	    @Override
+	    public QuoteDto addQuote(QuoteDto dto) {
+	        Proposal proposal = proposalRepo.findById(dto.getProposalId())
+	                .orElseThrow(() -> new RuntimeException("Proposal not found with ID: " + dto.getProposalId()));
 
-	@Override
-	public Quote updateQuote(Quote quote) throws QuoteNotFoundException {
-		if (!repo.existsById(quote.getQuoteId())) {
-            throw new QuoteNotFoundException("Cannot update ");
-        }
-        return repo.save(quote);
-	}
+	        Quote quote = new Quote();
+	        quote.setQuoteId(dto.getQuoteId());
+	        quote.setPremiumAmount(dto.getPremiumAmount());
+	        quote.setProposal(proposal);
 
-	@Override
-	public Quote getQuoteById(int quoteId) throws QuoteNotFoundException {
-		return repo.findById(quoteId).orElseThrow(() -> new QuoteNotFoundException("Quote ID " + quoteId + " not found"));
-	}
+	        return convertToDto(repo.save(quote));
+	    }
 
-	@Override
-	public List<Quote> getAllQuotes() {
-		
-		return repo.findAll();
-	}
+	    @Override
+	    public QuoteDto updateQuote(QuoteDto dto) {
+	        if (!repo.existsById(dto.getQuoteId())) {
+	            throw new RuntimeException("Quote not found with ID: " + dto.getQuoteId());
+	        }
 
-	@Override
-	public String deleteQuoteById(int quoteId) {
-	 repo.deleteById(quoteId);
-		return "Quote deleted successfully";
-	}
+	        Proposal proposal = proposalRepo.findById(dto.getProposalId())
+	                .orElseThrow(() -> new RuntimeException("Proposal not found with ID: " + dto.getProposalId()));
 
+	        Quote quote = new Quote();
+	        quote.setQuoteId(dto.getQuoteId());
+	        quote.setPremiumAmount(dto.getPremiumAmount());
+	        quote.setProposal(proposal);
+
+	        return convertToDto(repo.save(quote));
+	    }
+
+	    @Override
+	    public QuoteDto getQuoteById(int quoteId) {
+	        Quote quote = repo.findById(quoteId)
+	                .orElseThrow(() -> new RuntimeException("Quote not found with ID: " + quoteId));
+	        return convertToDto(quote);
+	    }
+
+	 @Override
+	    public List<QuoteDto> getAllQuotes() {
+	        return repo.findAll().stream()
+	                .map(this::convertToDto)
+	                .collect(Collectors.toList());
+	    }
+
+	 
+
+	 @Override
+	 @Transactional
+	 public String deleteQuoteById(int quoteId) {
+	     Quote quote = repo.findById(quoteId)
+	             .orElseThrow(() -> new RuntimeException("Quote not found with ID: " + quoteId));
+
+	     // break the FK relation
+	     quote.setProposal(null);
+	     repo.save(quote);
+
+	     repo.delete(quote);
+	     repo.flush();
+	     return "Quote deleted successfully";
+	 }
 }

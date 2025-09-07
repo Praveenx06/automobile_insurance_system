@@ -10,16 +10,16 @@ import com.hexaware.automobile.insurancesystem.entities.Document;
 
 
 public interface IDocumentService {
-	    public Document addDocument(DocumentDto dto);
+	    public DocumentDto addDocument(DocumentDto dto);
 
-	    public Document getDocumentById(int docId) ;
+	    public DocumentDto getDocumentById(int docId) ;
 
-	    public List<Document> getAllDocuments();
+	    public List<DocumentDto> getAllDocuments();
 
-	    public Document updateDocument(Document document) ;
+	    public DocumentDto updateDocument(DocumentDto document) ;
 
 	    public String deleteDocumentById(int docId);
 	    
-	   public  List<Document> getDocumentsByProposalId(int proposalId);
+	   public  List<DocumentDto> getDocumentsByProposalId(int proposalId);
 
 }

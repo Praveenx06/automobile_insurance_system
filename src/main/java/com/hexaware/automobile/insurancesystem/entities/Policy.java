@@ -32,7 +32,9 @@ public class Policy {
 	    private LocalDate startDate;
 	    private LocalDate endDate;
 	    private String status;  
-	    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL)
+	    private String description;
+	    private double price;
+	    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL,orphanRemoval = true)
 	    private List<Claim> claims;
 
 }

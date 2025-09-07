@@ -44,7 +44,7 @@ public class AuthController {
         return "User registered successfully";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login")	
     public AuthResponse login(@RequestBody AuthRequest authRequest) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())

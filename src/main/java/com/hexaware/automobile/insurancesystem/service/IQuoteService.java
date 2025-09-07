@@ -3,16 +3,17 @@ package com.hexaware.automobile.insurancesystem.service;
  * Modified on : 01-Aug-2025
  * Description :IQuoteService 
  * */
-import java.util.List; 
+import java.util.List;
 
-import com.hexaware.automobile.insurancesystem.entities.Quote;
+import com.hexaware.automobile.insurancesystem.dto.QuoteDto;
+
 
 
 public interface IQuoteService {
-	Quote addQuote(Quote quote);
-    Quote updateQuote(Quote quote) ;
-    Quote getQuoteById(int quoteId) ;
-    List<Quote> getAllQuotes();
+	QuoteDto addQuote(QuoteDto dto);
+    QuoteDto updateQuote(QuoteDto dto) ;
+    QuoteDto getQuoteById(int quoteId) ;
+    List<QuoteDto> getAllQuotes();
     String deleteQuoteById(int quoteId) ;
 
 }

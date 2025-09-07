@@ -65,7 +65,7 @@ class UserServiceImpTest {
 	    @Test
 	    @Order(3)
 	    public void testGetAllUser() {
-	        List<User> users = userService.getAllUser();
+	        List<UserDto> users = userService.getAllUser();
 	        assertNotNull(users);
 	        assertTrue(users.size() > 0);
 	    }

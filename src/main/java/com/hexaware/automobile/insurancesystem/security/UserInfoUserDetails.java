@@ -21,7 +21,7 @@ public class UserInfoUserDetails implements UserDetails {
         this.username = user.getEmail();
         this.password = user.getPassword();
         // Store exactly "ADMIN" or "USER"
-        this.authorities = List.of(new SimpleGrantedAuthority(user.getRoles()));
+        this.authorities = List.of(new SimpleGrantedAuthority("ROLE_"+user.getRoles()));
     }
 
     @Override

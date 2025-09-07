@@ -13,8 +13,8 @@ public interface IVehicleService {
 
 	    public Vehicle addVehicle(VehicleDto dto);
 	    public Vehicle updateVehicle(Vehicle vehicle);
-	    public Vehicle getVehicleById(int vehicleId) ;
-	    List<Vehicle> getAllVehicles();
+	    public VehicleDto getVehicleById(int vehicleId) ;
+	    List<VehicleDto> getAllVehicles();
 	    public String deleteVehicleById(int vehicleId);
-	    List<Vehicle> getVehiclesByType(String type);
+	    List<VehicleDto> getVehiclesByType(String type);
 }
